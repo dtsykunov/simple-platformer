@@ -6,7 +6,7 @@ extends Area2D
 var is_opened: bool = false
 
 func _ready() -> void:
-	Global.key_obtained.connect(on_key_obtained)
+	Global.level_objective_reached.connect(on_key_obtained)
 
 func on_key_obtained() -> void:
 	is_opened = true

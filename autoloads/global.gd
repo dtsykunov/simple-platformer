@@ -2,4 +2,4 @@ extends Node
 
 var game_controller: Main
 
-signal key_obtained
+signal level_objective_reached
