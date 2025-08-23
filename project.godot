@@ -10,7 +10,7 @@ config_version=5
 
 [application]
 
-config/name="running-and-collecting-coins"
+config/name="simple-platformer"
 run/main_scene="uid://b26unv7jyq0et"
 config/features=PackedStringArray("4.4", "GL Compatibility")
 config/icon="res://icon.svg"
@@ -18,6 +18,10 @@ config/icon="res://icon.svg"
 [autoload]
 
 Global="*res://autoloads/global.gd"
+
+[display]
+
+window/stretch/mode="viewport"
 
 [input]
 
