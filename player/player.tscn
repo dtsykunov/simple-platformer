@@ -1,10 +1,10 @@
 [gd_scene load_steps=9 format=3 uid="uid://c60qrcvqsxgsl"]
 
-[ext_resource type="Script" uid="uid://dpmx4asom5qxv" path="res://player/player.gd" id="1_oul6g"]
+[ext_resource type="Script" uid="uid://dm48nbu4fu2xj" path="res://player/player.gd" id="1_oul6g"]
 [ext_resource type="Texture2D" uid="uid://rjl8g5eb07l6" path="res://assets/images/monochrome_tilemap_transparent_packed.png" id="2_rkbax"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_rkbax"]
-size = Vector2(20, 20.7984)
+size = Vector2(15, 15)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_rkbax"]
 atlas = ExtResource("2_rkbax")
@@ -60,23 +60,16 @@ animations = [{
 "speed": 5.0
 }]
 
-[node name="Player" type="CharacterBody2D" node_paths=PackedStringArray("PlayerSprite", "PlayerCollider") groups=["player"]]
-scale = Vector2(2, 2)
+[node name="Player" type="CharacterBody2D" groups=["player"]]
 script = ExtResource("1_oul6g")
-PlayerSprite = NodePath("AnimatedSprite2D")
-PlayerCollider = NodePath("CollisionShape2D")
-jumps = 2
-run = true
-jump = true
-idle = true
-falling = true
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2(0, -4.5)
-scale = Vector2(0.323983, 0.432725)
 shape = SubResource("RectangleShape2D_rkbax")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
-position = Vector2(0, -8)
+texture_filter = 1
 sprite_frames = SubResource("SpriteFrames_g6k8r")
 animation = &"idle"
+
+[node name="RayCast2D" type="RayCast2D" parent="."]
+target_position = Vector2(8, 0)

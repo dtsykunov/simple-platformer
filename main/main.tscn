@@ -6,7 +6,7 @@
 [node name="Main" type="Node"]
 script = ExtResource("1_53q0u")
 finish_game_scene = "uid://du013kubxbcxq"
-worlds = Array[String](["uid://ccg15u6y73hh6", "uid://cawu8yg0hfdjc"])
+worlds = Array[String](["uid://c2cmu6fitxjlu"])
 
 [node name="GUI" type="Control" parent="."]
 layout_mode = 3
@@ -22,5 +22,6 @@ size_flags_vertical = 6
 layout_mode = 1
 
 [node name="World" type="Node2D" parent="."]
+texture_filter = 1
 
 [node name="Node2D" type="Node2D" parent="World"]
