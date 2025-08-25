@@ -6,15 +6,19 @@ signal resources_changed
 
 signal oxygen_depleted
 
-@export var resources := {
+@export var default_resources := {
 	"money": 0, # you can leave those blank this is just what you start with
 	"oxygen": MAX_OXYGEN,
 	"goal": 1,
 }
+var resources := {}
 
 @export var label_container: NodePath
 
 var resource_labels := {}
+
+func _ready() -> void:
+	reset_resources()
 
 func add_resource(resource_name: String, value: int):
 	if not resources.has(resource_name):
@@ -33,3 +37,6 @@ func add_resource(resource_name: String, value: int):
 func set_resource_value(resource_name: String, value: int):
 	resources[resource_name] = value
 	resources_changed.emit()
+
+func reset_resources() -> void:
+	resources = default_resources.duplicate()
