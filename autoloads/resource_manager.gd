@@ -1,6 +1,5 @@
 extends Node
 
-const MAX_OXYGEN: int = 20
 
 signal resources_changed
 signal oxygen_depleted
@@ -11,63 +10,91 @@ enum ResourceType {
 	GOAL,
 }
 
+enum UpgradeTypes {
+	ADD_MAX_OXYGEN,
+}
+
+const UPGRADE_PRICE_MULTIPLIER: int = 2
+const DEFAULT_MAX_OXYGEN: int = 20
+
 @export var default_resources: Dictionary[ResourceType, int] = {
 	ResourceType.MONEY: 0, # you can leave those blank this is just what you start with
-	ResourceType.OXYGEN: MAX_OXYGEN,
+	ResourceType.OXYGEN: DEFAULT_MAX_OXYGEN,
 	ResourceType.GOAL: 1,
 }
 
-@export var default_multipliers: Dictionary[ResourceType, int] = {
-	ResourceType.MONEY: 1,
-	ResourceType.OXYGEN: 1,
+@export var default_upgrades_levels: Dictionary[UpgradeTypes, int] = {
+	UpgradeTypes.ADD_MAX_OXYGEN: 0,
 }
 
-var resources := {}
-var multipliers := {}
+@export var default_upgrades_prices: Dictionary[UpgradeTypes, int] = {
+	UpgradeTypes.ADD_MAX_OXYGEN: 1,
+}
+
+var max_oxygen: int = DEFAULT_MAX_OXYGEN
+var resources: Dictionary[ResourceType, int] = {}
+var upgrades_levels: Dictionary[ResourceType, int] = {}
+var upgrades_prices: Dictionary[ResourceType, int] = {}
+
 
 func _ready() -> void:
 	reset()
 
-func add_resource(resource_name: ResourceType, value: int, ignore_multipliers: bool = false) -> void:
-	if not ignore_multipliers:
-		value = _apply_multipliers(resource_name, value)
 
-	if not resources.has(resource_name):
-		set_resource_value(resource_name, value)
+func add_resource(resource_type: ResourceType, value: int) -> void:
+	if not resources.has(resource_type):
+		set_resource_value(resource_type, value)
 		return
 
-	var new_value = resources[resource_name] + value
-	if resource_name == ResourceType.OXYGEN:
-		new_value = clamp(new_value, 0, MAX_OXYGEN)
-		set_resource_value(resource_name, new_value)
+	var new_value = resources[resource_type] + value
+	if resource_type == ResourceType.OXYGEN:
+		new_value = clamp(new_value, 0, max_oxygen)
+		set_resource_value(resource_type, new_value)
 		if new_value <= 0:
 			oxygen_depleted.emit()
-	else:
-		set_resource_value(resource_name, new_value)
+		return
 
-func set_resource_value(resource_name: ResourceType, value: int):
-	resources[resource_name] = value
+	set_resource_value(resource_type, new_value)
+
+
+func set_resource_value(resource_type: ResourceType, value: int):
+	resources[resource_type] = value
 	resources_changed.emit()
+
 
 func try_complete_goal() -> void:
 	var goal = resources[ResourceType.GOAL]
 	if resources[ResourceType.MONEY] >= goal:
-		add_resource(ResourceType.GOAL, +1)
-		add_resource(ResourceType.MONEY, -goal, true) # ignore multipliers when subtracting money
-		set_resource_value(ResourceType.OXYGEN, _apply_multipliers(ResourceType.OXYGEN, MAX_OXYGEN))
+		add_resource(ResourceType.GOAL, 1)
+		add_resource(ResourceType.MONEY, -goal)
+		set_resource_value(ResourceType.OXYGEN, max_oxygen)
 		Global.level_objective_reached.emit()
 
-func _apply_multipliers(resource_name: ResourceType, value: int) -> int:
-	if not multipliers.has(resource_name):
-		return value
-	return value * multipliers[resource_name]
+
+func buy_upgrade(upgrade_type: UpgradeTypes) -> void:
+	if not _can_buy_upgrade(upgrade_type):
+		return
+	var price = upgrades_prices[upgrade_type]
+	add_resource(ResourceType.MONEY, -price)
+	upgrades_levels[upgrade_type] += 1
+	upgrades_prices[upgrade_type] *= UPGRADE_PRICE_MULTIPLIER
+	_apply_upgrades(upgrade_type)
+
 
 func reset() -> void:
-	_reset_resources()
-	_reset_multipliers()
-
-func _reset_resources() -> void:
+	max_oxygen = DEFAULT_MAX_OXYGEN
 	resources = default_resources.duplicate()
+	upgrades_levels = default_upgrades_levels.duplicate()
+	upgrades_prices = default_upgrades_prices.duplicate()
 
-func _reset_multipliers() -> void:
-	multipliers = default_multipliers.duplicate()
+
+func _can_buy_upgrade(upgrade_type: UpgradeTypes) -> bool:
+	if not upgrades_prices.has(upgrade_type):
+		return false
+	var price = upgrades_prices[upgrade_type]
+	return resources[ResourceType.MONEY] >= price
+
+
+func _apply_upgrades(upgrade_type: UpgradeTypes):
+	if upgrade_type == UpgradeTypes.ADD_MAX_OXYGEN:
+		max_oxygen += 5

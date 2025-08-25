@@ -29,7 +29,6 @@ func load_next_world() -> void:
 	change_world(world_scene)
 
 func start_game() -> void:
-	print("Starting game...")
 	change_gui(game_gui_scene)
 	load_next_world()
 	world.visible = true
