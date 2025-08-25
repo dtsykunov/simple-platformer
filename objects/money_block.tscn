@@ -1,14 +1,15 @@
 [gd_scene load_steps=3 format=3 uid="uid://bopwgln8jb6bd"]
 
 [ext_resource type="Script" uid="uid://fat35jgt7e35" path="res://objects/objects.gd" id="1_8uh7m"]
-[ext_resource type="Texture2D" uid="uid://bcwxcxgqq6wne" path="res://icon.svg" id="1_37kl0"]
+[ext_resource type="Texture2D" uid="uid://lnrxatxoyun5" path="res://assets/images/Gemstone.png" id="2_epqeg"]
 
 [node name="MoneyBlock" type="Node2D"]
 script = ExtResource("1_8uh7m")
 selected_resource = "money"
 
 [node name="TextureRect" type="TextureRect" parent="."]
+texture_filter = 1
 offset_right = 16.0
 offset_bottom = 16.0
-texture = ExtResource("1_37kl0")
+texture = ExtResource("2_epqeg")
 expand_mode = 1
