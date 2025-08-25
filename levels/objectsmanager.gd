@@ -1,17 +1,17 @@
-extends Node2D
 class_name GridSpawner
+extends Node2D
 
 @export var scenes: Array[ObjectEntry] = []
 
 @export var grid_size_x: int = 10
 @export var grid_size_y: int = 10
-@export var offset :Vector2i = Vector2i.ZERO
+@export var offset: Vector2i = Vector2i.ZERO
 
-var objects = {}
+var objects: Dictionary[Vector2i, Node] = {}
 
 func _ready():
 	spawn_grid()
-	
+	Global.grid_spawner = self
 
 func spawn_grid():
 	for x in range(grid_size_x):

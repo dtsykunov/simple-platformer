@@ -1,12 +1,12 @@
-[gd_scene load_steps=10 format=4 uid="uid://c2cmu6fitxjlu"]
+[gd_scene load_steps=11 format=4 uid="uid://c2cmu6fitxjlu"]
 
 [ext_resource type="TileSet" uid="uid://cs8qrnk8em5eo" path="res://levels/tileset.tres" id="1_rdvg4"]
 [ext_resource type="PackedScene" uid="uid://c60qrcvqsxgsl" path="res://player/player.tscn" id="2_7mtq7"]
 [ext_resource type="Script" uid="uid://b0km62wkmdhs2" path="res://levels/objectsmanager.gd" id="3_7mtq7"]
 [ext_resource type="Script" uid="uid://bi8fethk08cn5" path="res://levels/object_probability.gd" id="4_1ij17"]
-[ext_resource type="PackedScene" uid="uid://bopwgln8jb6bd" path="res://test.tscn" id="4_p70o0"]
-[ext_resource type="PackedScene" uid="uid://dkg7fa2iy1m7c" path="res://test_2.tscn" id="6_6ygv5"]
-[ext_resource type="Script" uid="uid://58c4bxmace0i" path="res://levels/resource_manager.gd" id="7_gvx6i"]
+[ext_resource type="PackedScene" uid="uid://bopwgln8jb6bd" path="res://objects/money_block.tscn" id="4_p70o0"]
+[ext_resource type="PackedScene" uid="uid://dkg7fa2iy1m7c" path="res://objects/oxygen_block.tscn" id="6_6ygv5"]
+[ext_resource type="Script" uid="uid://ddair0fbwpki" path="res://levels/win_area.gd" id="9_cod5g"]
 
 [sub_resource type="Resource" id="Resource_6ygv5"]
 script = ExtResource("4_1ij17")
@@ -19,6 +19,9 @@ script = ExtResource("4_1ij17")
 scene = ExtResource("6_6ygv5")
 probability = 0.1
 metadata/_custom_type_script = "uid://bi8fethk08cn5"
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_npjwk"]
+size = Vector2(480, 40)
 
 [node name="Basic" type="Node2D"]
 
@@ -38,17 +41,9 @@ grid_size_x = 28
 grid_size_y = 12
 offset = Vector2i(1, 4)
 
-[node name="ResourceManager" type="Node2D" parent="."]
-script = ExtResource("7_gvx6i")
-label_container = NodePath("Control/VBoxContainer")
+[node name="WinArea" type="Area2D" parent="."]
+script = ExtResource("9_cod5g")
 
-[node name="Control" type="Control" parent="ResourceManager"]
-layout_mode = 3
-anchors_preset = 0
-offset_right = 40.0
-offset_bottom = 40.0
-
-[node name="VBoxContainer" type="VBoxContainer" parent="ResourceManager/Control"]
-layout_mode = 0
-offset_right = 40.0
-offset_bottom = 40.0
+[node name="CollisionShape2D" type="CollisionShape2D" parent="WinArea"]
+position = Vector2(240, 20)
+shape = SubResource("RectangleShape2D_npjwk")

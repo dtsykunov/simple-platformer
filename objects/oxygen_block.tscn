@@ -1,13 +1,13 @@
 [gd_scene load_steps=4 format=3 uid="uid://dkg7fa2iy1m7c"]
 
-[ext_resource type="PackedScene" uid="uid://bopwgln8jb6bd" path="res://test.tscn" id="1_tam42"]
+[ext_resource type="PackedScene" uid="uid://bopwgln8jb6bd" path="res://objects/money_block.tscn" id="1_tam42"]
 
 [sub_resource type="Gradient" id="Gradient_m0tip"]
 
 [sub_resource type="GradientTexture2D" id="GradientTexture2D_b456k"]
 gradient = SubResource("Gradient_m0tip")
 
-[node name="Node2D2" instance=ExtResource("1_tam42")]
+[node name="OxygenBlock" instance=ExtResource("1_tam42")]
 selected_resource = "oxygen"
 resource_value = 5
 
