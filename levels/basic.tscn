@@ -1,8 +1,9 @@
-[gd_scene load_steps=11 format=4 uid="uid://c2cmu6fitxjlu"]
+[gd_scene load_steps=12 format=4 uid="uid://c2cmu6fitxjlu"]
 
 [ext_resource type="TileSet" uid="uid://cs8qrnk8em5eo" path="res://levels/tileset.tres" id="1_rdvg4"]
 [ext_resource type="PackedScene" uid="uid://c60qrcvqsxgsl" path="res://player/player.tscn" id="2_7mtq7"]
 [ext_resource type="Script" uid="uid://b0km62wkmdhs2" path="res://levels/objectsmanager.gd" id="3_7mtq7"]
+[ext_resource type="PackedScene" uid="uid://c6q25jj3anfru" path="res://helper/blocks_particles.tscn" id="3_npjwk"]
 [ext_resource type="Script" uid="uid://bi8fethk08cn5" path="res://levels/object_probability.gd" id="4_1ij17"]
 [ext_resource type="PackedScene" uid="uid://bopwgln8jb6bd" path="res://objects/money_block.tscn" id="4_p70o0"]
 [ext_resource type="PackedScene" uid="uid://dkg7fa2iy1m7c" path="res://objects/oxygen_block.tscn" id="6_6ygv5"]
@@ -33,6 +34,7 @@ tile_set = ExtResource("1_rdvg4")
 [node name="Player" parent="." node_paths=PackedStringArray("tile_map_layer") instance=ExtResource("2_7mtq7")]
 position = Vector2(8, 40)
 tile_map_layer = NodePath("../TileMapLayer")
+block_particle = ExtResource("3_npjwk")
 
 [node name="ObjectsManager" type="Node2D" parent="."]
 script = ExtResource("3_7mtq7")

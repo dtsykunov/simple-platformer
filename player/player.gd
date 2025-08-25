@@ -3,6 +3,9 @@ extends CharacterBody2D
 @export var tile_map_layer: TileMapLayer
 @onready var ray = $RayCast2D
 
+@export var block_particle: PackedScene
+
+
 var inputs = {
 	"right": Vector2.RIGHT,
 	"left": Vector2.LEFT,
@@ -26,6 +29,11 @@ func move(dir):
 
 	# TODO: move this logic to a separate script
 	var cell: Vector2i = tile_map_layer.local_to_map(ray.target_position + position)
+
+	var particle = block_particle.instantiate()
+	particle.position = ray.target_position + position
+	particle.emitting = true
+	get_tree().current_scene.add_child(particle)
 
 	if cell in Global.grid_spawner.objects:
 		Global.grid_spawner.objects[cell].use_object()
