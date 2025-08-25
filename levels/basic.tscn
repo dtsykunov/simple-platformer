@@ -2,7 +2,7 @@
 
 [ext_resource type="PackedScene" uid="uid://c60qrcvqsxgsl" path="res://player/player.tscn" id="2_7mtq7"]
 [ext_resource type="Texture2D" uid="uid://hrkrccqhy3jr" path="res://assets/images/Tiletset_space-Sheet.png" id="2_npjwk"]
-[ext_resource type="Script" uid="uid://b0km62wkmdhs2" path="res://levels/objectsmanager.gd" id="3_7mtq7"]
+[ext_resource type="Script" uid="uid://b0km62wkmdhs2" path="res://levels/grid_spawner.gd" id="3_7mtq7"]
 [ext_resource type="PackedScene" uid="uid://c6q25jj3anfru" path="res://helper/blocks_particles.tscn" id="3_npjwk"]
 [ext_resource type="Script" uid="uid://bi8fethk08cn5" path="res://levels/object_probability.gd" id="4_1ij17"]
 [ext_resource type="PackedScene" uid="uid://bopwgln8jb6bd" path="res://objects/money_block.tscn" id="4_p70o0"]

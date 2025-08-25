@@ -5,9 +5,4 @@ func _ready() -> void:
 
 func _on_win_area_body_entered(body: Node2D) -> void:
     if body.is_in_group("player"):
-        var goal = ResourceManager.resources[ResourceManager.ResourceType.GOAL]
-        if ResourceManager.resources[ResourceManager.ResourceType.MONEY] >= goal:
-            ResourceManager.add_resource(ResourceManager.ResourceType.GOAL, +1)
-            ResourceManager.add_resource(ResourceManager.ResourceType.MONEY, -goal)
-            ResourceManager.set_resource_value(ResourceManager.ResourceType.OXYGEN, ResourceManager.MAX_OXYGEN)
-            Global.level_objective_reached.emit()
+        ResourceManager.try_complete_goal()
