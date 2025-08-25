@@ -1,7 +1,8 @@
-[gd_scene load_steps=9 format=3 uid="uid://c60qrcvqsxgsl"]
+[gd_scene load_steps=10 format=3 uid="uid://c60qrcvqsxgsl"]
 
 [ext_resource type="Script" uid="uid://dm48nbu4fu2xj" path="res://player/player.gd" id="1_oul6g"]
 [ext_resource type="Texture2D" uid="uid://rjl8g5eb07l6" path="res://assets/images/monochrome_tilemap_transparent_packed.png" id="2_rkbax"]
+[ext_resource type="Texture2D" uid="uid://cla7643y2nf0t" path="res://assets/images/Charachter.png" id="3_g1dw6"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_rkbax"]
 size = Vector2(15, 15)
@@ -10,9 +11,9 @@ size = Vector2(15, 15)
 atlas = ExtResource("2_rkbax")
 region = Rect2(64, 208, 16, 16)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_g1dw6"]
-atlas = ExtResource("2_rkbax")
-region = Rect2(16, 208, 16, 16)
+[sub_resource type="AtlasTexture" id="AtlasTexture_g6k8r"]
+atlas = ExtResource("3_g1dw6")
+region = Rect2(0, 0, 32, 32)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_yw30f"]
 atlas = ExtResource("2_rkbax")
@@ -34,7 +35,7 @@ animations = [{
 }, {
 "frames": [{
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_g1dw6")
+"texture": SubResource("AtlasTexture_g6k8r")
 }],
 "loop": true,
 "name": &"idle",
@@ -68,6 +69,7 @@ shape = SubResource("RectangleShape2D_rkbax")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 texture_filter = 1
+scale = Vector2(0.5, 0.5)
 sprite_frames = SubResource("SpriteFrames_g6k8r")
 animation = &"idle"
 

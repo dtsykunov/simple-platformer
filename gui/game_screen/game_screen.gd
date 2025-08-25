@@ -5,9 +5,9 @@ extends Control
 @export var oxygen_label: Label
 
 @onready var labels = {
-	"money": money_label,
-	"oxygen": oxygen_label,
-	"goal": goal_label,
+	ResourceManager.ResourceType.MONEY: money_label,
+	ResourceManager.ResourceType.OXYGEN: oxygen_label,
+	ResourceManager.ResourceType.GOAL: goal_label,
 }
 
 func _ready() -> void:

@@ -19,7 +19,7 @@ func _unhandled_input(event):
 			move(dir)
 
 func move(dir):
-	ResourceManager.add_resource("oxygen", -1)
+	ResourceManager.add_resource(ResourceManager.ResourceType.OXYGEN, -1)
 
 	ray.target_position = inputs[dir] * Global.tile_size
 	ray.force_raycast_update()

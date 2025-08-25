@@ -8,7 +8,7 @@
 gradient = SubResource("Gradient_m0tip")
 
 [node name="OxygenBlock" instance=ExtResource("1_tam42")]
-selected_resource = "oxygen"
+selected_resource = 1
 resource_value = 5
 
 [node name="TextureRect" parent="." index="0"]

@@ -5,7 +5,6 @@
 
 [node name="MoneyBlock" type="Node2D"]
 script = ExtResource("1_8uh7m")
-selected_resource = "money"
 
 [node name="TextureRect" type="TextureRect" parent="."]
 texture_filter = 1
