@@ -9,11 +9,14 @@ extends Node
 @onready var gui: Control = $GUI
 @onready var world: Node2D = $World
 
+@export var animation : AnimationPlayer
+
 
 func _ready() -> void:
 	Global.game_controller = self
 
 	ResourceManager.oxygen_depleted.connect(finish_game)
+	
 
 func change_gui(scene_path: String) -> void:
 	var new_gui = load(scene_path).instantiate()
@@ -29,9 +32,13 @@ func load_next_world() -> void:
 	change_world(world_scene)
 
 func start_game() -> void:
+	animation.play("main_transition")
+	await animation.animation_finished
 	change_gui(game_gui_scene)
 	load_next_world()
 	world.visible = true
+	animation.play_backwards("main_transition")
+	
 
 func finish_game() -> void:
 	change_gui(finish_game_scene)
@@ -39,5 +46,7 @@ func finish_game() -> void:
 
 func _unhandled_key_input(event: InputEvent) -> void:
 	if event.is_action_pressed("ui_cancel"):
+		animation.stop()
 		ResourceManager.reset()
 		get_tree().reload_current_scene()
+		

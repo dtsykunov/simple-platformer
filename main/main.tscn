@@ -1,14 +1,59 @@
-[gd_scene load_steps=4 format=3 uid="uid://b26unv7jyq0et"]
+[gd_scene load_steps=9 format=3 uid="uid://b26unv7jyq0et"]
 
 [ext_resource type="Script" uid="uid://bkucidew2lu8r" path="res://main/main.gd" id="1_53q0u"]
 [ext_resource type="PackedScene" uid="uid://inibl4uw1lxl" path="res://gui/start_screen/start_screen.tscn" id="2_pjrb6"]
 [ext_resource type="Script" uid="uid://58c4bxmace0i" path="res://autoloads/resource_manager.gd" id="3_xwkvk"]
+[ext_resource type="Shader" uid="uid://c2grkam4vykrn" path="res://helper/transition.gdshader" id="4_c651c"]
 
-[node name="Main" type="Node"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_3wy1v"]
+shader = ExtResource("4_c651c")
+shader_parameter/progress = 0.0
+shader_parameter/reverse = false
+shader_parameter/number_of_tiles = Vector2(16, 9)
+shader_parameter/pixels_per_tile = Vector2(16, 16)
+
+[sub_resource type="Animation" id="Animation_kfbq2"]
+resource_name = "main_transition"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("ColorRect:material:shader_parameter/progress")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [0.0, 1.0]
+}
+
+[sub_resource type="Animation" id="Animation_4dugh"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("ColorRect:material:shader_parameter/progress")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.0]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_67ri8"]
+_data = {
+&"RESET": SubResource("Animation_4dugh"),
+&"main_transition": SubResource("Animation_kfbq2")
+}
+
+[node name="Main" type="Node" node_paths=PackedStringArray("animation")]
 script = ExtResource("1_53q0u")
 finish_game_scene = "uid://du013kubxbcxq"
 game_gui_scene = "uid://bb24snp1vy07g"
 world_scene = "uid://c2cmu6fitxjlu"
+animation = NodePath("TransitionAnimation")
 
 [node name="GUI" type="Control" parent="."]
 layout_mode = 3
@@ -30,3 +75,14 @@ texture_filter = 1
 
 [node name="ResourceManager" type="Node2D" parent="World"]
 script = ExtResource("3_xwkvk")
+
+[node name="ColorRect" type="ColorRect" parent="."]
+material = SubResource("ShaderMaterial_3wy1v")
+offset_right = 480.0
+offset_bottom = 270.0
+mouse_filter = 2
+
+[node name="TransitionAnimation" type="AnimationPlayer" parent="."]
+libraries = {
+&"": SubResource("AnimationLibrary_67ri8")
+}

@@ -1,6 +1,7 @@
 extends CharacterBody2D
 
 @export var tile_map_layer: TileMapLayer
+@export var tile_map_layer2: TileMapLayer
 @onready var ray = $RayCast2D
 
 @export var block_particle: PackedScene
@@ -42,3 +43,8 @@ func move(dir):
 
 	tile_map_layer.erase_cell(cell)
 	tile_map_layer.set_cells_terrain_connect([cell], 0, -1)
+	
+	var suround = tile_map_layer2.get_surrounding_cells(cell)
+	for x in suround:
+		tile_map_layer2.erase_cell(x)
+		tile_map_layer2.set_cells_terrain_connect([x], 0, -1)
