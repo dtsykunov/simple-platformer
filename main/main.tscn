@@ -1,18 +1,17 @@
-[gd_scene load_steps=9 format=3 uid="uid://b26unv7jyq0et"]
+[gd_scene load_steps=8 format=3 uid="uid://b26unv7jyq0et"]
 
 [ext_resource type="Script" uid="uid://bkucidew2lu8r" path="res://main/main.gd" id="1_53q0u"]
 [ext_resource type="PackedScene" uid="uid://inibl4uw1lxl" path="res://gui/start_screen/start_screen.tscn" id="2_pjrb6"]
-[ext_resource type="Script" uid="uid://58c4bxmace0i" path="res://autoloads/resource_manager.gd" id="3_xwkvk"]
-[ext_resource type="Shader" uid="uid://c2grkam4vykrn" path="res://helper/transition.gdshader" id="4_c651c"]
+[ext_resource type="Shader" uid="uid://c63qt8vqqb7bg" path="res://helper/transition.gdshader" id="3_xwkvk"]
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_3wy1v"]
-shader = ExtResource("4_c651c")
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_c651c"]
+shader = ExtResource("3_xwkvk")
 shader_parameter/progress = 0.0
 shader_parameter/reverse = false
 shader_parameter/number_of_tiles = Vector2(16, 9)
 shader_parameter/pixels_per_tile = Vector2(16, 16)
 
-[sub_resource type="Animation" id="Animation_4dugh"]
+[sub_resource type="Animation" id="Animation_kfbq2"]
 length = 0.001
 tracks/0/type = "value"
 tracks/0/imported = false
@@ -27,7 +26,7 @@ tracks/0/keys = {
 "values": [0.0]
 }
 
-[sub_resource type="Animation" id="Animation_kfbq2"]
+[sub_resource type="Animation" id="Animation_3wy1v"]
 resource_name = "main_transition"
 tracks/0/type = "value"
 tracks/0/imported = false
@@ -42,18 +41,24 @@ tracks/0/keys = {
 "values": [0.0, 1.0]
 }
 
-[sub_resource type="AnimationLibrary" id="AnimationLibrary_67ri8"]
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_4dugh"]
 _data = {
-&"RESET": SubResource("Animation_4dugh"),
-&"main_transition": SubResource("Animation_kfbq2")
+&"RESET": SubResource("Animation_kfbq2"),
+&"main_transition": SubResource("Animation_3wy1v")
 }
 
 [node name="Main" type="Node" node_paths=PackedStringArray("animation")]
 script = ExtResource("1_53q0u")
 finish_game_scene = "uid://du013kubxbcxq"
 game_gui_scene = "uid://bb24snp1vy07g"
+upgrades_screen_scene = "uid://bm6bswng777cr"
 world_scene = "uid://c2cmu6fitxjlu"
-animation = NodePath("TransitionAnimation")
+animation = NodePath("AnimationPlayer")
+
+[node name="World" type="Node2D" parent="."]
+texture_filter = 1
+
+[node name="Node2D" type="Node2D" parent="World"]
 
 [node name="GUI" type="Control" parent="."]
 layout_mode = 3
@@ -68,21 +73,13 @@ size_flags_vertical = 6
 [node name="StartScreen" parent="GUI" instance=ExtResource("2_pjrb6")]
 layout_mode = 1
 
-[node name="World" type="Node2D" parent="."]
-texture_filter = 1
-
-[node name="Node2D" type="Node2D" parent="World"]
-
-[node name="ResourceManager" type="Node2D" parent="World"]
-script = ExtResource("3_xwkvk")
-
 [node name="ColorRect" type="ColorRect" parent="."]
-material = SubResource("ShaderMaterial_3wy1v")
+material = SubResource("ShaderMaterial_c651c")
 offset_right = 480.0
 offset_bottom = 270.0
 mouse_filter = 2
 
-[node name="TransitionAnimation" type="AnimationPlayer" parent="."]
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 libraries = {
-&"": SubResource("AnimationLibrary_67ri8")
+&"": SubResource("AnimationLibrary_4dugh")
 }

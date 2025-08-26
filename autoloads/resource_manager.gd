@@ -47,7 +47,6 @@ func add_resource(resource_type: ResourceType, value: int) -> void:
 		return
 
 	var new_value = resources[resource_type] + value
-	
 	if resource_type == ResourceType.OXYGEN:
 		new_value = clamp(new_value, 0, max_oxygen)
 		set_resource_value(resource_type, new_value)
@@ -63,19 +62,22 @@ func set_resource_value(resource_type: ResourceType, value: int):
 	resources_changed.emit()
 
 
-func try_complete_goal(player_pos: Vector2) -> void:
-	if player_pos.y > 3 * Global.tile_size:
-		return
+func is_goal_reached() -> bool:
+	return resources[ResourceType.MONEY] >= resources[ResourceType.GOAL]
+
+func renew() -> void:
+	set_resource_value(ResourceType.OXYGEN, max_oxygen)
+
+func check_goal_and_prepare() -> bool:
 	var goal = resources[ResourceType.GOAL]
 	if resources[ResourceType.MONEY] >= goal:
 		add_resource(ResourceType.GOAL, 1)
 		add_resource(ResourceType.MONEY, -goal)
-		set_resource_value(ResourceType.OXYGEN, max_oxygen)
-		Global.level_objective_reached.emit()
-
+		return true
+	return false
 
 func buy_upgrade(upgrade_type: UpgradeTypes) -> void:
-	if not _can_buy_upgrade(upgrade_type):
+	if not can_buy_upgrade(upgrade_type):
 		return
 	var price = upgrades_prices[upgrade_type]
 	add_resource(ResourceType.MONEY, -price)
@@ -91,7 +93,7 @@ func reset() -> void:
 	upgrades_prices = default_upgrades_prices.duplicate()
 
 
-func _can_buy_upgrade(upgrade_type: UpgradeTypes) -> bool:
+func can_buy_upgrade(upgrade_type: UpgradeTypes) -> bool:
 	if not upgrades_prices.has(upgrade_type):
 		return false
 	var price = upgrades_prices[upgrade_type]

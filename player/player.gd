@@ -6,8 +6,7 @@ extends CharacterBody2D
 
 @export var block_particle: PackedScene
 
-var last_player_pos = Vector2.ZERO
-
+@onready var last_player_pos = position
 
 var inputs = {
 	"right": Vector2.RIGHT,
@@ -16,9 +15,11 @@ var inputs = {
 	"down": Vector2.DOWN,
 }
 
-func _unhandled_input(event):
+func _physics_process(_delta: float) -> void:
+	if Global.game_controller.game_state != Main.GameState.PLAYING:
+		return
 	for dir in inputs.keys():
-		if event.is_action_pressed(dir):
+		if Input.is_action_just_pressed(dir):
 			move(dir)
 
 func move(dir):
@@ -27,9 +28,8 @@ func move(dir):
 	ray.force_raycast_update()
 	if !ray.is_colliding():
 		position += inputs[dir] * Global.tile_size
-		print(last_player_pos,"|",position)
-		if last_player_pos.y != position.y:
-			ResourceManager.try_complete_goal(position)
+		if last_player_pos.y != position.y and position.y < 3 *Global.tile_size: # 3 for space tiles maybe add a check var
+			Global.player_reached_surface.emit()
 		ResourceManager.add_resource(ResourceManager.ResourceType.OXYGEN, -1)
 		last_player_pos = position
 		return
@@ -49,10 +49,11 @@ func move(dir):
 
 	tile_map_layer.erase_cell(cell)
 	tile_map_layer.set_cells_terrain_connect([cell], 0, -1)
-	
+
 	var suround = tile_map_layer2.get_surrounding_cells(cell)
 	for x in suround:
 		tile_map_layer2.erase_cell(x)
 		tile_map_layer2.set_cells_terrain_connect([x], 0, -1)
-	
+
 	ResourceManager.add_resource(ResourceManager.ResourceType.OXYGEN, -1)
+	

@@ -11,7 +11,7 @@ config_version=5
 [application]
 
 config/name="simple-platformer"
-run/main_scene="uid://dgekpvkf6j15a"
+run/main_scene="uid://cvr6h8digves8"
 config/features=PackedStringArray("4.4", "GL Compatibility")
 config/icon="res://icon.svg"
 

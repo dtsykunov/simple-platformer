@@ -1,0 +1,55 @@
+[gd_scene load_steps=2 format=3 uid="uid://bm6bswng777cr"]
+
+[ext_resource type="Script" uid="uid://dpbwn6le3omh6" path="res://gui/upgrade_screen/upgrade_screen.gd" id="1_s1jit"]
+
+[node name="Upgrade Screen" type="Control" node_paths=PackedStringArray("oxygen_upgrade_button", "skip_button", "oxygen_upgrade_price_label")]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_s1jit")
+oxygen_upgrade_button = NodePath("HBoxContainer/VBoxContainer/OxygenUpgradeButton")
+skip_button = NodePath("HBoxContainer/SkipButton")
+oxygen_upgrade_price_label = NodePath("HBoxContainer/VBoxContainer/HBoxContainer/OxygenPriceLabel")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -20.0
+offset_right = 20.0
+offset_bottom = 20.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="HBoxContainer"]
+layout_mode = 2
+
+[node name="OxygenUpgradeButton" type="Button" parent="HBoxContainer/VBoxContainer"]
+layout_mode = 2
+text = "+ max oxygen"
+
+[node name="HBoxContainer" type="HBoxContainer" parent="HBoxContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label2" type="Label" parent="HBoxContainer/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "price"
+horizontal_alignment = 1
+
+[node name="OxygenPriceLabel" type="Label" parent="HBoxContainer/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "10"
+horizontal_alignment = 1
+
+[node name="SkipButton" type="Button" parent="HBoxContainer"]
+layout_mode = 2
+text = "skip"
