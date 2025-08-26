@@ -6,6 +6,8 @@ extends CharacterBody2D
 
 @export var block_particle: PackedScene
 
+var last_player_pos = Vector2.ZERO
+
 
 var inputs = {
 	"right": Vector2.RIGHT,
@@ -20,12 +22,16 @@ func _unhandled_input(event):
 			move(dir)
 
 func move(dir):
-	ResourceManager.add_resource(ResourceManager.ResourceType.OXYGEN, -1)
 
 	ray.target_position = inputs[dir] * Global.tile_size
 	ray.force_raycast_update()
 	if !ray.is_colliding():
 		position += inputs[dir] * Global.tile_size
+		print(last_player_pos,"|",position)
+		if last_player_pos.y != position.y:
+			ResourceManager.try_complete_goal(position)
+		ResourceManager.add_resource(ResourceManager.ResourceType.OXYGEN, -1)
+		last_player_pos = position
 		return
 
 	# TODO: move this logic to a separate script
@@ -48,3 +54,5 @@ func move(dir):
 	for x in suround:
 		tile_map_layer2.erase_cell(x)
 		tile_map_layer2.set_cells_terrain_connect([x], 0, -1)
+	
+	ResourceManager.add_resource(ResourceManager.ResourceType.OXYGEN, -1)

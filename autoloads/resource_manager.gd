@@ -47,6 +47,7 @@ func add_resource(resource_type: ResourceType, value: int) -> void:
 		return
 
 	var new_value = resources[resource_type] + value
+	
 	if resource_type == ResourceType.OXYGEN:
 		new_value = clamp(new_value, 0, max_oxygen)
 		set_resource_value(resource_type, new_value)
@@ -62,7 +63,9 @@ func set_resource_value(resource_type: ResourceType, value: int):
 	resources_changed.emit()
 
 
-func try_complete_goal() -> void:
+func try_complete_goal(player_pos: Vector2) -> void:
+	if player_pos.y > 3 * Global.tile_size:
+		return
 	var goal = resources[ResourceType.GOAL]
 	if resources[ResourceType.MONEY] >= goal:
 		add_resource(ResourceType.GOAL, 1)
