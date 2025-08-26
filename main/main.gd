@@ -4,12 +4,14 @@ extends Node
 enum GameState {
 	START_MENU,
 	PLAYING,
+	UPGRADING,
 	END_SCREEN,
 }
 var game_state: GameState = GameState.START_MENU
 
 @export_file var finish_game_scene: String
 @export_file var game_gui_scene: String
+@export_file var upgrades_screen_scene: String
 
 @export_file var world_scene: String
 
@@ -29,16 +31,14 @@ func _change_gui(scene_path: String) -> void:
 
 func _change_world(scene_path: String) -> void:
 	var new_world = load(scene_path).instantiate()
-	var child = world.get_child(0)
-	print("child: ", child, child.name)
-	child.queue_free()
-	print("child: ", child)
+	world.get_child(0).queue_free()
 	world.add_child(new_world)
 
 func start_game() -> void:
-	if game_state != GameState.START_MENU:
+	if game_state not in [GameState.START_MENU, GameState.UPGRADING]:
 		return
 	game_state = GameState.PLAYING
+	ResourceManager.renew()
 	_change_gui(game_gui_scene)
 	_change_world(world_scene)
 	world.visible = true
@@ -58,5 +58,8 @@ func _unhandled_key_input(event: InputEvent) -> void:
 func _on_player_reached_surface() -> void:
 	if game_state != GameState.PLAYING:
 		return
-	if ResourceManager.check_goal_and_prepare():
-		_change_world(world_scene)
+	if ResourceManager.is_goal_reached():
+		game_state = GameState.UPGRADING
+		ResourceManager.add_resource(ResourceManager.ResourceType.MONEY, -ResourceManager.resources[ResourceManager.ResourceType.GOAL])
+		ResourceManager.add_resource(ResourceManager.ResourceType.GOAL, 1)
+		_change_gui(upgrades_screen_scene)

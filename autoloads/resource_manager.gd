@@ -62,12 +62,17 @@ func set_resource_value(resource_type: ResourceType, value: int):
 	resources_changed.emit()
 
 
+func is_goal_reached() -> bool:
+	return resources[ResourceType.MONEY] >= resources[ResourceType.GOAL]
+
+func renew() -> void:
+	set_resource_value(ResourceType.OXYGEN, max_oxygen)
+
 func check_goal_and_prepare() -> bool:
 	var goal = resources[ResourceType.GOAL]
 	if resources[ResourceType.MONEY] >= goal:
 		add_resource(ResourceType.GOAL, 1)
 		add_resource(ResourceType.MONEY, -goal)
-		set_resource_value(ResourceType.OXYGEN, max_oxygen)
 		return true
 	return false
 
