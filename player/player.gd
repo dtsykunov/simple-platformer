@@ -13,9 +13,11 @@ var inputs = {
 	"down": Vector2.DOWN,
 }
 
-func _unhandled_input(event):
+func _physics_process(_delta: float) -> void:
+	if Global.game_controller.game_state != Main.GameState.PLAYING:
+		return
 	for dir in inputs.keys():
-		if event.is_action_pressed(dir):
+		if Input.is_action_just_pressed(dir):
 			move(dir)
 
 func move(dir):
