@@ -141,7 +141,7 @@ tile_map_data = PackedByteArray("AAAAAAMAAAAKAAUAAAAAAAQAAAAKAAYAAAAAAAUAAAAKAAY
 tile_set = SubResource("TileSet_d1ymv")
 
 [node name="Player" parent="." node_paths=PackedStringArray("tile_map_layer", "tile_map_layer2") instance=ExtResource("2_7mtq7")]
-position = Vector2(248, 40)
+position = Vector2(8, 40)
 tile_map_layer = NodePath("../TileMapLayer")
 tile_map_layer2 = NodePath("../TileMapLayer2")
 block_particle = ExtResource("3_npjwk")
