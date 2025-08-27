@@ -8,5 +8,5 @@ extends Node2D
 func use_object():
 	block_density -= 1
 	if block_density <= 0:
+		ResourceManager.add_resource(selected_resource, resource_value)
 		queue_free()
-	ResourceManager.add_resource(selected_resource, resource_value)
