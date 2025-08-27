@@ -1,6 +1,7 @@
 extends CharacterBody2D
 
 @onready var ray = $RayCast2D
+@onready var anim: AnimatedSprite2D = $AnimatedSprite2D
 
 @onready var last_player_pos = position
 
@@ -11,6 +12,9 @@ var inputs = {
 	"down": Vector2.DOWN,
 }
 
+func _ready() -> void:
+	anim.play("idle")
+
 func _physics_process(_delta: float) -> void:
 	if Global.game_controller.game_state != Main.GameState.PLAYING:
 		return
@@ -19,16 +23,24 @@ func _physics_process(_delta: float) -> void:
 			move(dir)
 
 func move(dir):
+	anim.rotation = inputs[dir].angle()
+
 	ray.target_position = inputs[dir] * Global.tile_size
 	ray.force_raycast_update()
 	if !ray.is_colliding():
-		position += inputs[dir] * Global.tile_size
-		if last_player_pos.y != position.y and position.y < 3 * Global.tile_size: # 3 for space tiles maybe add a check var
+		var new_position = position + inputs[dir] * Global.tile_size
+		var tween = create_tween()
+		tween.tween_property(self, "position", new_position, 0.3).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
+		anim.play("walk")
+		tween.finished.connect(anim.play.bind("idle"))
+
+		if last_player_pos.y != new_position.y and new_position.y < 3 * Global.tile_size: # 3 for space tiles maybe add a check var
 			Global.player_reached_surface.emit()
 		ResourceManager.add_resource(ResourceManager.ResourceType.OXYGEN, -1)
-		last_player_pos = position
+		last_player_pos = new_position
 		return
 
 	Global.grid_spawner.use_cell_at_position(ray.target_position + position)
+	anim.play("mine")
 
 	ResourceManager.add_resource(ResourceManager.ResourceType.OXYGEN, -1)
