@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://du013kubxbcxq"]
 
-[ext_resource type="Script" path="res://gui/finish_game_screen/finish_game_screen.gd" id="1_6ht6d"]
+[ext_resource type="Script" uid="uid://bfcj2mgxpww0x" path="res://gui/finish_game_screen/finish_game_screen.gd" id="1_6ht6d"]
 
 [node name="FinishGameScreen" type="Control" node_paths=PackedStringArray("score_label")]
 texture_filter = 1

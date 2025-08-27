@@ -3,6 +3,7 @@
 [ext_resource type="Script" uid="uid://dvsnfwaawlvnm" path="res://gui/game_screen/game_screen.gd" id="1_yedis"]
 
 [node name="GameScreen" type="Control" node_paths=PackedStringArray("money_label", "goal_label", "oxygen_label")]
+texture_filter = 1
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -24,7 +25,7 @@ layout_mode = 2
 
 [node name="Label" type="Label" parent="VBoxContainer/HBoxContainer"]
 layout_mode = 2
-text = "money:"
+text = "MONEY:"
 
 [node name="Label2" type="Label" parent="VBoxContainer/HBoxContainer"]
 layout_mode = 2
@@ -35,7 +36,7 @@ layout_mode = 2
 
 [node name="Label" type="Label" parent="VBoxContainer/HBoxContainer2"]
 layout_mode = 2
-text = "oxygen:"
+text = "OXYGEN:"
 
 [node name="Label2" type="Label" parent="VBoxContainer/HBoxContainer2"]
 layout_mode = 2
@@ -52,7 +53,7 @@ grow_horizontal = 0
 
 [node name="Label" type="Label" parent="HBoxContainer"]
 layout_mode = 2
-text = "goal:"
+text = "DAILY GOAL:"
 
 [node name="Label2" type="Label" parent="HBoxContainer"]
 layout_mode = 2

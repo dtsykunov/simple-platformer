@@ -1,0 +1,17 @@
+[gd_scene load_steps=3 format=3 uid="uid://n7wf1h62u7qk"]
+
+[ext_resource type="Script" uid="uid://fat35jgt7e35" path="res://objects/objects.gd" id="1_sf7mg"]
+[ext_resource type="Texture2D" uid="uid://lnrxatxoyun5" path="res://assets/images/Gemstone.png" id="2_4wile"]
+
+[node name="MoneyBlock" type="Node2D"]
+script = ExtResource("1_sf7mg")
+resource_value = 5
+block_density = 2
+
+[node name="TextureRect" type="TextureRect" parent="."]
+self_modulate = Color(1, 0.0917303, 0.0513093, 1)
+texture_filter = 1
+offset_right = 16.0
+offset_bottom = 16.0
+texture = ExtResource("2_4wile")
+expand_mode = 1
