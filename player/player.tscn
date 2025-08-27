@@ -78,9 +78,6 @@ animations = [{
 }, {
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_ebec5")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_g6k8r")
 }],
 "loop": false,
 "name": &"walk",
@@ -97,7 +94,9 @@ shape = SubResource("RectangleShape2D_rkbax")
 texture_filter = 1
 scale = Vector2(0.5, 0.5)
 sprite_frames = SubResource("SpriteFrames_g6k8r")
-animation = &"idle"
+animation = &"walk"
+frame = 2
+frame_progress = 1.0
 
 [node name="RayCast2D" type="RayCast2D" parent="."]
 target_position = Vector2(8, 0)
