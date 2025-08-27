@@ -12,6 +12,7 @@ var objects: Dictionary[Vector2i, Node] = {}
 
 @onready var mine_tile_map_layer: TileMapLayer = $MineTileMapLayer
 @onready var fog_tile_map_layer: TileMapLayer = $FogTileMapLayer
+@onready var sound_player: AudioStreamPlayer2D = $AudioStreamPlayer2D
 
 func _ready():
 	spawn_grid()
@@ -53,6 +54,7 @@ func use_cell_at_position(pos: Vector2) -> void:
 	else:
 		erase_cell(cell_pos)
 	_emit_particle(cell_pos)
+	_play_sound()
 
 func _emit_particle(pos: Vector2i) -> void:
 	var particle = block_particle.instantiate()
@@ -60,3 +62,6 @@ func _emit_particle(pos: Vector2i) -> void:
 	particle.emitting = true
 	add_child(particle)
 	particle.finished.connect(particle.queue_free)
+
+func _play_sound() -> void:
+	sound_player.play()
