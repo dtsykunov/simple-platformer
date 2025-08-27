@@ -32,7 +32,6 @@ func move(dir):
 		var tween = create_tween()
 		tween.tween_property(self, "position", new_position, 0.3).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
 		anim.play("walk")
-		tween.finished.connect(anim.play.bind("idle"))
 
 		if last_player_pos.y != new_position.y and new_position.y < 3 * Global.tile_size: # 3 for space tiles maybe add a check var
 			Global.player_reached_surface.emit()
