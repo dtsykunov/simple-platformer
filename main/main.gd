@@ -15,10 +15,10 @@ var game_state: GameState = GameState.START_MENU
 
 @export_file var world_scene: String
 
-@onready var gui: Control = $GUI
+@onready var gui: CanvasLayer = $GUI
 @onready var world: Node2D = $World
 
-@export var animation : AnimationPlayer
+@export var animation: AnimationPlayer
 
 
 func _ready() -> void:

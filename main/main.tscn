@@ -56,22 +56,8 @@ world_scene = "uid://c2cmu6fitxjlu"
 animation = NodePath("AnimationPlayer")
 
 [node name="World" type="Node2D" parent="."]
-texture_filter = 1
 
 [node name="Node2D" type="Node2D" parent="World"]
-
-[node name="GUI" type="Control" parent="."]
-layout_mode = 3
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-size_flags_horizontal = 6
-size_flags_vertical = 6
-
-[node name="StartScreen" parent="GUI" instance=ExtResource("2_pjrb6")]
-layout_mode = 1
 
 [node name="ColorRect" type="ColorRect" parent="."]
 material = SubResource("ShaderMaterial_c651c")
@@ -83,3 +69,8 @@ mouse_filter = 2
 libraries = {
 &"": SubResource("AnimationLibrary_4dugh")
 }
+
+[node name="GUI" type="CanvasLayer" parent="."]
+layer = 0
+
+[node name="StartScreen" parent="GUI" instance=ExtResource("2_pjrb6")]

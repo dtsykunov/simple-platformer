@@ -1,5 +1,6 @@
-[gd_scene load_steps=30 format=4 uid="uid://c2cmu6fitxjlu"]
+[gd_scene load_steps=31 format=4 uid="uid://c2cmu6fitxjlu"]
 
+[ext_resource type="Script" uid="uid://dpi4jyqahw8b5" path="res://camera/camera.gd" id="1_vgpam"]
 [ext_resource type="PackedScene" uid="uid://c60qrcvqsxgsl" path="res://player/player.tscn" id="2_7mtq7"]
 [ext_resource type="Texture2D" uid="uid://b42cvobvpevrj" path="res://assets/images/test_top_tiles.png" id="2_cod5g"]
 [ext_resource type="Texture2D" uid="uid://hrkrccqhy3jr" path="res://assets/images/Tiletset_space-Sheet.png" id="2_npjwk"]
@@ -65,6 +66,9 @@ probability = 0.05
 gen_height_min = 0
 gen_height_max = -1
 metadata/_custom_type_script = "uid://bi8fethk08cn5"
+
+[sub_resource type="WorldBoundaryShape2D" id="WorldBoundaryShape2D_msope"]
+distance = -5.0
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_cod5g"]
 texture = ExtResource("2_npjwk")
@@ -173,10 +177,13 @@ stream_2/stream = ExtResource("12_c84p0")
 stream_3/stream = ExtResource("13_vgpam")
 stream_4/stream = ExtResource("14_p57ps")
 
-[sub_resource type="WorldBoundaryShape2D" id="WorldBoundaryShape2D_msope"]
-distance = -5.0
-
 [node name="Basic" type="Node2D"]
+
+[node name="Camera2D" type="Camera2D" parent="." node_paths=PackedStringArray("player", "bottom_boundary")]
+position = Vector2(232, 40)
+script = ExtResource("1_vgpam")
+player = NodePath("../Player")
+bottom_boundary = NodePath("../ObjectsManager/WorldBoundaries/BottomBoundary")
 
 [node name="ObjectsManager" type="Node2D" parent="."]
 script = ExtResource("3_7mtq7")
@@ -185,6 +192,26 @@ grid_size_x = 28
 grid_size_y = 67
 offset = Vector2i(1, 4)
 block_particle = ExtResource("3_npjwk")
+
+[node name="WorldBoundaries" type="StaticBody2D" parent="ObjectsManager"]
+
+[node name="LeftBoundary" type="CollisionShape2D" parent="ObjectsManager/WorldBoundaries"]
+rotation = 1.5708
+shape = SubResource("WorldBoundaryShape2D_msope")
+
+[node name="RightBoundary" type="CollisionShape2D" parent="ObjectsManager/WorldBoundaries"]
+position = Vector2(480, 0)
+rotation = -1.5708
+shape = SubResource("WorldBoundaryShape2D_msope")
+
+[node name="TopBoundary" type="CollisionShape2D" parent="ObjectsManager/WorldBoundaries"]
+position = Vector2(240, 29)
+rotation = 3.14159
+shape = SubResource("WorldBoundaryShape2D_msope")
+
+[node name="BottomBoundary" type="CollisionShape2D" parent="ObjectsManager/WorldBoundaries"]
+position = Vector2(240, 1138)
+shape = SubResource("WorldBoundaryShape2D_msope")
 
 [node name="MineTileMapLayer" type="TileMapLayer" parent="ObjectsManager"]
 texture_filter = 1
@@ -200,23 +227,3 @@ stream = SubResource("AudioStreamRandomizer_tovdy")
 
 [node name="Player" parent="." instance=ExtResource("2_7mtq7")]
 position = Vector2(232, 40)
-
-[node name="WorldBoundaries" type="StaticBody2D" parent="."]
-
-[node name="LeftBoundary" type="CollisionShape2D" parent="WorldBoundaries"]
-rotation = 1.5708
-shape = SubResource("WorldBoundaryShape2D_msope")
-
-[node name="RightBoundary" type="CollisionShape2D" parent="WorldBoundaries"]
-position = Vector2(480, 0)
-rotation = -1.5708
-shape = SubResource("WorldBoundaryShape2D_msope")
-
-[node name="TopBoundary" type="CollisionShape2D" parent="WorldBoundaries"]
-position = Vector2(240, 29)
-rotation = 3.14159
-shape = SubResource("WorldBoundaryShape2D_msope")
-
-[node name="BottomBoundary" type="CollisionShape2D" parent="WorldBoundaries"]
-position = Vector2(240, 1138)
-shape = SubResource("WorldBoundaryShape2D_msope")
