@@ -11,9 +11,9 @@ func _ready() -> void:
 	global_position = Vector2(get_viewport().get_visible_rect().size.x / 2, camera_offset_y)
 
 func _process(delta: float) -> void:
-	# global_position.y = player.global_position.y # jerky camera
 	if player.global_position.y < camera_offset_y:
 		return
-	if player.global_position.y > (bottom_boundary.global_position.y + camera_offset_y):
+	if player.global_position.y > (bottom_boundary.global_position.y - camera_offset_y):
 		return
+	# global_position.y = player.global_position.y # jerky camera
 	global_position.y = lerp(global_position.y, player.global_position.y, follow_speed * delta) # smooth camera
