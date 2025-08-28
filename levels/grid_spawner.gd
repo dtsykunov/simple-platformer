@@ -14,9 +14,11 @@ var objects: Dictionary[Vector2i, Node] = {}
 @onready var fog_tile_map_layer: TileMapLayer = $FogTileMapLayer
 @onready var sound_player: AudioStreamPlayer2D = $AudioStreamPlayer2D
 
+
 func _ready():
 	spawn_grid()
 	Global.grid_spawner = self
+
 
 func spawn_grid():
 	for x in range(grid_size_x):
@@ -41,20 +43,42 @@ func get_scene_by_probability() -> PackedScene:
 			return entry.scene
 	return null
 
+
 func erase_cell(cell_pos: Vector2i) -> void:
 	objects.erase(cell_pos)
 	mine_tile_map_layer.erase_cell(cell_pos)
 	mine_tile_map_layer.set_cells_terrain_connect([cell_pos], 0, -1)
+	fog_tile_map_layer.erase_cell(cell_pos)
 	fog_tile_map_layer.set_cells_terrain_connect(fog_tile_map_layer.get_surrounding_cells(cell_pos), 0, -1)
 
-func use_cell_at_position(pos: Vector2) -> void:
-	var cell_pos: Vector2i = mine_tile_map_layer.local_to_map(pos)
-	if cell_pos in objects:
-		objects[cell_pos].use_object()
-	else:
-		erase_cell(cell_pos)
-	_emit_particle(cell_pos)
+func _get_cells_at_position(pos: Vector2, radius: int = 0) -> Array: # Array[Vector2i]
+	var start_cell: Vector2i = mine_tile_map_layer.local_to_map(pos)
+	var visited: Dictionary[Vector2i, bool] = {start_cell: true}
+	var frontier := [start_cell]
+	for i in range(radius):
+		var new_frontier := []
+		for cell in frontier:
+			for neighbor in mine_tile_map_layer.get_surrounding_cells(cell):
+				if neighbor not in visited:
+					visited[neighbor] = true
+					new_frontier.append(neighbor)
+		frontier = new_frontier
+	return visited.keys()
+
+func reveal_cell_at_position(pos: Vector2, radius: int = 0) -> void:
+	var cells = _get_cells_at_position(pos, radius)
+	fog_tile_map_layer.set_cells_terrain_connect(cells, 0, -1)
+
+func use_cell_at_position(pos: Vector2, radius: int = 0) -> void:
+	var cells = _get_cells_at_position(pos, radius)
+	for cell in cells:
+		if cell in objects:
+			objects[cell].use_object()
+		else:
+			erase_cell(cell)
+		_emit_particle(cell)
 	_play_sound()
+
 
 func _emit_particle(pos: Vector2i) -> void:
 	var particle = block_particle.instantiate()
@@ -62,6 +86,7 @@ func _emit_particle(pos: Vector2i) -> void:
 	particle.emitting = true
 	add_child(particle)
 	particle.finished.connect(particle.queue_free)
+
 
 func _play_sound() -> void:
 	sound_player.play()

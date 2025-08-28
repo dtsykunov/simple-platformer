@@ -45,7 +45,7 @@ func move(dir):
 			anim.play("idle")
 		)
 		anim.play("walk")
-		Global.grid_spawner.use_cell_at_position(new_position) # so you can pick up exploded items
+		# Global.grid_spawner.use_cell_at_position(new_position) # so you can pick up exploded items
 		if last_player_pos.y != new_position.y and new_position.y < 3 * Global.tile_size: # 3 for space tiles maybe add a check var
 			Global.player_reached_surface.emit()
 		ResourceManager.add_resource(ResourceManager.ResourceType.OXYGEN, -1)
