@@ -57,6 +57,5 @@ func _damage_player_if_near() -> void:
 	if not player:
 		return
 
-	var player_cell = tile_map_layer.local_to_map(player.global_position)
-	if player_cell.distance_to(grid_pos) <= damage_radius:
+	if Global.grid_spawner.get_distance_in_cells(global_position, player.global_position) <= damage_radius:
 		ResourceManager.add_resource(ResourceManager.ResourceType.OXYGEN, -5)

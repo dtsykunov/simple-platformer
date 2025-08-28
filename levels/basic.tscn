@@ -38,23 +38,23 @@ metadata/_custom_type_script = "uid://bi8fethk08cn5"
 [sub_resource type="Resource" id="Resource_d1ymv"]
 script = ExtResource("4_1ij17")
 scene = ExtResource("6_g63yi")
-probability = 0.05
-gen_height_min = 11
+probability = 0.1
+gen_height_min = 15
 gen_height_max = -1
 metadata/_custom_type_script = "uid://bi8fethk08cn5"
 
 [sub_resource type="Resource" id="Resource_vpgjg"]
 script = ExtResource("4_1ij17")
 scene = ExtResource("6_d1ymv")
-probability = 0.01
-gen_height_min = 20
+probability = 0.1
+gen_height_min = 25
 gen_height_max = -1
 metadata/_custom_type_script = "uid://bi8fethk08cn5"
 
 [sub_resource type="Resource" id="Resource_c84p0"]
 script = ExtResource("4_1ij17")
 scene = ExtResource("7_iog2i")
-probability = 0.05
+probability = 0.01
 gen_height_min = 0
 gen_height_max = -1
 metadata/_custom_type_script = "uid://bi8fethk08cn5"
@@ -62,7 +62,7 @@ metadata/_custom_type_script = "uid://bi8fethk08cn5"
 [sub_resource type="Resource" id="Resource_vgpam"]
 script = ExtResource("4_1ij17")
 scene = ExtResource("8_c84p0")
-probability = 0.05
+probability = 0.01
 gen_height_min = 0
 gen_height_max = -1
 metadata/_custom_type_script = "uid://bi8fethk08cn5"

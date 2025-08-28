@@ -90,3 +90,8 @@ func _emit_particle(pos: Vector2i) -> void:
 
 func _play_sound() -> void:
 	sound_player.play()
+
+func get_distance_in_cells(position1, position2) -> float:
+	var grid_pos = mine_tile_map_layer.local_to_map(position1)
+	var player_cell = mine_tile_map_layer.local_to_map(position2)
+	return player_cell.distance_to(grid_pos)
