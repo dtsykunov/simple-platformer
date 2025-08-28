@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" uid="uid://bkucidew2lu8r" path="res://main/main.gd" id="1_53q0u"]
 [ext_resource type="PackedScene" uid="uid://inibl4uw1lxl" path="res://gui/start_screen/start_screen.tscn" id="2_pjrb6"]
-[ext_resource type="Shader" path="res://helper/transition.gdshader" id="3_xwkvk"]
+[ext_resource type="Shader" uid="uid://c63qt8vqqb7bg" path="res://helper/transition.gdshader" id="3_xwkvk"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_c651c"]
 shader = ExtResource("3_xwkvk")
@@ -16,7 +16,7 @@ length = 0.001
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("ColorRect:material:shader_parameter/progress")
+tracks/0/path = NodePath("GUI2/ColorRect:material:shader_parameter/progress")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
@@ -31,7 +31,7 @@ resource_name = "main_transition"
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("ColorRect:material:shader_parameter/progress")
+tracks/0/path = NodePath("GUI2/ColorRect:material:shader_parameter/progress")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
@@ -53,24 +53,28 @@ finish_game_scene = "uid://du013kubxbcxq"
 game_gui_scene = "uid://bb24snp1vy07g"
 upgrades_screen_scene = "uid://bm6bswng777cr"
 world_scene = "uid://c2cmu6fitxjlu"
-animation = NodePath("AnimationPlayer")
+animation = NodePath("GUI2/AnimationPlayer")
 
 [node name="World" type="Node2D" parent="."]
 
 [node name="Node2D" type="Node2D" parent="World"]
 
-[node name="ColorRect" type="ColorRect" parent="."]
+[node name="GUI" type="CanvasLayer" parent="."]
+layer = 0
+
+[node name="StartScreen" parent="GUI" instance=ExtResource("2_pjrb6")]
+
+[node name="GUI2" type="CanvasLayer" parent="."]
+layer = 0
+
+[node name="ColorRect" type="ColorRect" parent="GUI2"]
 material = SubResource("ShaderMaterial_c651c")
 offset_right = 480.0
 offset_bottom = 270.0
 mouse_filter = 2
 
-[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+[node name="AnimationPlayer" type="AnimationPlayer" parent="GUI2"]
+root_node = NodePath("../..")
 libraries = {
 &"": SubResource("AnimationLibrary_4dugh")
 }
-
-[node name="GUI" type="CanvasLayer" parent="."]
-layer = 0
-
-[node name="StartScreen" parent="GUI" instance=ExtResource("2_pjrb6")]

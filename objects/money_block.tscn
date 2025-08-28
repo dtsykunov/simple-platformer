@@ -1,13 +1,20 @@
-[gd_scene load_steps=3 format=3 uid="uid://bopwgln8jb6bd"]
+[gd_scene load_steps=5 format=3 uid="uid://bopwgln8jb6bd"]
 
 [ext_resource type="Script" uid="uid://fat35jgt7e35" path="res://objects/objects.gd" id="1_8uh7m"]
 [ext_resource type="Texture2D" uid="uid://lnrxatxoyun5" path="res://assets/images/Gemstone.png" id="2_epqeg"]
+[ext_resource type="Shader" uid="uid://c6j5f5ukxrrdo" path="res://objects/object_shader.gdshader" id="2_m7xid"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_d2qah"]
+shader = ExtResource("2_m7xid")
+shader_parameter/flash = false
+shader_parameter/override_color = Vector4(1, 1, 1, 1)
 
 [node name="MoneyBlock" type="Node2D"]
 script = ExtResource("1_8uh7m")
 
 [node name="TextureRect" type="TextureRect" parent="."]
 texture_filter = 1
+material = SubResource("ShaderMaterial_d2qah")
 offset_right = 16.0
 offset_bottom = 16.0
 texture = ExtResource("2_epqeg")

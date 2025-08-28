@@ -19,7 +19,7 @@ func _ready() -> void:
 		shader_mat = (tex_rect.material as ShaderMaterial).duplicate() # each object has own material
 	else:
 		shader_mat = ShaderMaterial.new()
-		shader_mat.shader = preload("res://objects/object_flash.gdshader")
+		shader_mat.shader = preload("res://objects/object_shader.gdshader")
 
 	shader_mat.resource_local_to_scene = true
 	tex_rect.material = shader_mat
