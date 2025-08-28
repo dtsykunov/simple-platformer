@@ -23,7 +23,7 @@ func _ready():
 func spawn_grid():
 	for x in range(grid_size_x):
 		for y in range(grid_size_y):
-			var selected_scene = get_scene_by_probability()
+			var selected_scene = select_mining_object_scene(y)
 			if selected_scene != null:
 				var cell_pos = Vector2i(x, y) + offset
 				var instance = selected_scene.instantiate()
@@ -32,14 +32,14 @@ func spawn_grid():
 				mine_tile_map_layer.add_child(instance)
 				objects[cell_pos] = instance
 
-
-# Picks a scene based on its probability
-func get_scene_by_probability() -> PackedScene:
-	var r = randf()
-	var cumulative = 0.0
+func select_mining_object_scene(height: int) -> PackedScene:
+	# TODO: this code is not the best because on layers where there're multiple ores, you have more of them
 	for entry in scenes:
-		cumulative += entry.probability
-		if r <= cumulative:
+		if height < entry.gen_height_min:
+			continue
+		if entry.gen_height_max != ObjectEntry.NO_MAX_LIMIT and height > entry.gen_height_max:
+			continue
+		if randf() <= entry.probability:
 			return entry.scene
 	return null
 
