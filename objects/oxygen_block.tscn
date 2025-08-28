@@ -1,15 +1,13 @@
 [gd_scene load_steps=4 format=3 uid="uid://dkg7fa2iy1m7c"]
 
 [ext_resource type="PackedScene" uid="uid://bopwgln8jb6bd" path="res://objects/money_block.tscn" id="1_tam42"]
-
-[sub_resource type="Gradient" id="Gradient_m0tip"]
-
-[sub_resource type="GradientTexture2D" id="GradientTexture2D_b456k"]
-gradient = SubResource("Gradient_m0tip")
+[ext_resource type="Texture2D" uid="uid://bsuwlavhx32st" path="res://assets/images/OxygenTileAssets.png" id="2_1tsyr"]
+[ext_resource type="Texture2D" uid="uid://bcqd3fdq8wf4s" path="res://assets/images/OxygenTile2.png" id="2_hdm47"]
 
 [node name="OxygenBlock" instance=ExtResource("1_tam42")]
 selected_resource = 1
 resource_value = 5
+random_images = Array[Texture2D]([ExtResource("2_hdm47"), ExtResource("2_1tsyr")])
 
 [node name="TextureRect" parent="." index="0"]
-texture = SubResource("GradientTexture2D_b456k")
+texture = ExtResource("2_1tsyr")

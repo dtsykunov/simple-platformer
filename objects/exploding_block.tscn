@@ -1,0 +1,33 @@
+[gd_scene load_steps=5 format=3 uid="uid://cxew0gsdvsuqy"]
+
+[ext_resource type="Script" uid="uid://dbbcqel5otauh" path="res://objects/exploding_block.gd" id="1_a4dpp"]
+
+[sub_resource type="Gradient" id="Gradient_a4dpp"]
+colors = PackedColorArray(1, 0, 0, 1, 1, 0, 0, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_440mi"]
+gradient = SubResource("Gradient_a4dpp")
+
+[sub_resource type="LabelSettings" id="LabelSettings_a4dpp"]
+line_spacing = 0.0
+font_size = 8
+
+[node name="ExplodingBlock" type="Node2D"]
+script = ExtResource("1_a4dpp")
+
+[node name="TextureRect" type="TextureRect" parent="."]
+texture_filter = 1
+offset_right = 16.0
+offset_bottom = 16.0
+texture = SubResource("GradientTexture2D_440mi")
+expand_mode = 1
+
+[node name="Label" type="Label" parent="."]
+custom_minimum_size = Vector2(16, 16)
+offset_top = -4.0
+offset_right = 16.0
+offset_bottom = 19.0
+text = "TNT"
+label_settings = SubResource("LabelSettings_a4dpp")
+horizontal_alignment = 1
+vertical_alignment = 1

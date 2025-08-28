@@ -1,0 +1,20 @@
+[gd_scene load_steps=4 format=3 uid="uid://wwlmg84m0cxp"]
+
+[ext_resource type="Script" uid="uid://c5a45t4qbphof" path="res://objects/light_grow_block.gd" id="1_lrhnw"]
+
+[sub_resource type="Gradient" id="Gradient_a4dpp"]
+colors = PackedColorArray(0, 0, 0, 1, 1, 0, 0, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_440mi"]
+gradient = SubResource("Gradient_a4dpp")
+
+[node name="TestBlock" type="Node2D"]
+script = ExtResource("1_lrhnw")
+
+[node name="TextureRect" type="TextureRect" parent="."]
+self_modulate = Color(0.319308, 0.433551, 0.974581, 1)
+texture_filter = 1
+offset_right = 16.0
+offset_bottom = 16.0
+texture = SubResource("GradientTexture2D_440mi")
+expand_mode = 1
