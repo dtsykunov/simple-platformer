@@ -44,6 +44,7 @@ func process_turn() -> void:
 
 
 func _trigger_explosion() -> void:
+	get_viewport().get_camera_2d().trigger_shake()
 	Global.grid_spawner.use_cell_at_position(global_position, damage_radius)
 
 	if deal_damage:

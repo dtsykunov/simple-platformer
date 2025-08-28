@@ -6,14 +6,32 @@ extends Camera2D
 
 @onready var camera_offset_y: float = get_viewport().get_visible_rect().size.y * 0.3
 
+const max_shake: float = 10.0
+const shake_fade: float = 10.0
+
+var _shake_strength: float = 0.0
+
+
 func _ready() -> void:
-	print("camera_offset_y: ", camera_offset_y)
 	global_position = Vector2(get_viewport().get_visible_rect().size.x / 2, camera_offset_y)
 
+func trigger_shake() -> void:
+	_shake_strength = max_shake
+
 func _process(delta: float) -> void:
+	_process_shake(delta)
+	_process_move(delta)
+
+
+func _process_move(_delta: float) -> void:
 	if player.global_position.y < camera_offset_y:
 		return
 	if player.global_position.y > (bottom_boundary.global_position.y - camera_offset_y):
 		return
-	# global_position.y = player.global_position.y # jerky camera
-	global_position.y = lerp(round(global_position.y), round(player.global_position.y), follow_speed * delta) # smooth camera # extra smooth with rounding xD
+	global_position.y = player.global_position.y # jerky camera
+	# global_position.y = lerp(round(global_position.y), round(player.global_position.y), follow_speed * delta) # smooth camera # extra smooth with rounding xD
+
+func _process_shake(delta: float) -> void:
+	if _shake_strength > 0:
+		_shake_strength = lerp(_shake_strength, 0.0, shake_fade * delta)
+		offset = Vector2(randf_range(-_shake_strength, _shake_strength), randf_range(-_shake_strength, _shake_strength))
