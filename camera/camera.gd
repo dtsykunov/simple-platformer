@@ -16,4 +16,4 @@ func _process(delta: float) -> void:
 	if player.global_position.y > (bottom_boundary.global_position.y - camera_offset_y):
 		return
 	# global_position.y = player.global_position.y # jerky camera
-	global_position.y = lerp(global_position.y, player.global_position.y, follow_speed * delta) # smooth camera
+	global_position.y = lerp(round(global_position.y), round(player.global_position.y), follow_speed * delta) # smooth camera # extra smooth with rounding xD
