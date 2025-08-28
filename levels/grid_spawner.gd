@@ -12,8 +12,8 @@ var objects: Dictionary[Vector2i, Node] = {}
 
 @onready var mine_tile_map_layer: TileMapLayer = $MineTileMapLayer
 @onready var fog_tile_map_layer: TileMapLayer = $FogTileMapLayer
-@onready var sound_player: AudioStreamPlayer2D = $AudioStreamPlayer2D
-
+@onready var sound_player: AudioStreamPlayer2D = $AudioStreamPlayer2DMining
+@onready var sound_player_gold: AudioStreamPlayer2D = $AudioStreamPlayer2DGold
 
 func _ready():
 	spawn_grid()
@@ -74,10 +74,12 @@ func use_cell_at_position(pos: Vector2, radius: int = 0) -> void:
 	for cell in cells:
 		if cell in objects:
 			objects[cell].use_object()
+			sound_player.play()
+			sound_player_gold.play()
 		else:
 			erase_cell(cell)
+			sound_player.play()
 		_emit_particle(cell)
-	_play_sound()
 
 
 func _emit_particle(pos: Vector2i) -> void:
@@ -87,9 +89,6 @@ func _emit_particle(pos: Vector2i) -> void:
 	add_child(particle)
 	particle.finished.connect(particle.queue_free)
 
-
-func _play_sound() -> void:
-	sound_player.play()
 
 func get_distance_in_cells(position1, position2) -> float:
 	var grid_pos = mine_tile_map_layer.local_to_map(position1)

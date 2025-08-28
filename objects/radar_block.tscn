@@ -62,6 +62,7 @@ width = 8
 
 [node name="RadarBlock" type="Node2D"]
 script = ExtResource("1_7uf1t")
+reveal_radius = 4
 
 [node name="TextureRect" type="TextureRect" parent="."]
 self_modulate = Color(0.319308, 0.433551, 0.974581, 1)
