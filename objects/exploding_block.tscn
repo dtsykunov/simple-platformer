@@ -21,6 +21,7 @@ offset_right = 16.0
 offset_bottom = 16.0
 texture = SubResource("GradientTexture2D_440mi")
 expand_mode = 1
+metadata/_edit_use_anchors_ = true
 
 [node name="Label" type="Label" parent="."]
 custom_minimum_size = Vector2(16, 16)

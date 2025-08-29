@@ -6,5 +6,5 @@ extends Node2D
 func use_object() -> void:
 	block_density -= 1
 	if block_density <= 0:
-		Global.grid_spawner.reveal_cell_at_position(global_position, reveal_radius)
+		Global.grid_spawner.reveal_cell_at_position(position, reveal_radius)
 		queue_free()

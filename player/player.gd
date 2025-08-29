@@ -43,15 +43,16 @@ func move(dir):
 		tween.finished.connect(func():
 			state = State.IDLE
 			anim.play("idle")
+			Global.grid_spawner.draw_path_to_surface(global_position)
 		)
 		anim.play("walk")
-		# Global.grid_spawner.use_cell_at_position(new_position) # so you can pick up exploded items
 		if last_player_pos.y != new_position.y and new_position.y < 3 * Global.tile_size: # 3 for space tiles maybe add a check var
 			Global.player_reached_surface.emit()
 		ResourceManager.add_resource(ResourceManager.ResourceType.OXYGEN, -1)
+
 		last_player_pos = new_position
 		return
 
-	Global.grid_spawner.use_cell_at_position(ray.target_position + position)
+	Global.grid_spawner.use_cell_at_position(ray.target_position + global_position)
 	anim.play("mine")
 	ResourceManager.add_resource(ResourceManager.ResourceType.OXYGEN, -1)

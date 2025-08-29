@@ -5,27 +5,64 @@ extends Node2D
 
 @export var grid_size_x: int = 10
 @export var grid_size_y: int = 10
-@export var offset: Vector2i = Vector2i.ZERO
 @export var block_particle: PackedScene
+
+@export var mine_offset_cells: Vector2i = Vector2i.ZERO
 
 var objects: Dictionary[Vector2i, Node] = {}
 
-@onready var mine_tile_map_layer: TileMapLayer = $MineTileMapLayer
-@onready var fog_tile_map_layer: TileMapLayer = $FogTileMapLayer
+@onready var mine_tile_map_layer: TileMapLayer = %MineTileMapLayer
+@onready var fog_tile_map_layer: TileMapLayer = %FogTileMapLayer
 @onready var sound_player: AudioStreamPlayer2D = $AudioStreamPlayer2DMining
 @onready var sound_player_gold: AudioStreamPlayer2D = $AudioStreamPlayer2DGold
+@onready var player: CharacterBody2D = $Player
+
+@onready var _astar: AStarGrid2D = AStarGrid2D.new()
 
 func _ready():
-	spawn_grid()
+	_setup_astar()
+	_spawn_objects()
 	Global.grid_spawner = self
 
+var _surface_points: Array[Vector2i] = []
 
-func spawn_grid():
-	for x in range(grid_size_x):
-		for y in range(grid_size_y):
+func _setup_astar() -> void:
+	_astar.region = Rect2i(0, 0, grid_size_x + 1, grid_size_y + 1)
+	_astar.cell_size = Vector2i(Global.tile_size, Global.tile_size)
+	_astar.offset = Vector2(Global.tile_size, Global.tile_size) * 0.5
+	_astar.default_compute_heuristic = AStarGrid2D.HEURISTIC_MANHATTAN
+	_astar.default_estimate_heuristic = AStarGrid2D.HEURISTIC_MANHATTAN
+	_astar.diagonal_mode = AStarGrid2D.DIAGONAL_MODE_NEVER
+	_astar.update()
+
+	for x in range(mine_offset_cells.x, grid_size_x + mine_offset_cells.x):
+		for y in range(mine_offset_cells.y, grid_size_y + mine_offset_cells.y):
+			_astar.set_point_solid(Vector2i(x, y))
+
+	for x in range(mine_offset_cells.x, grid_size_x + mine_offset_cells.x):
+		_surface_points.append(Vector2i(x, mine_offset_cells.y - 1))
+
+	queue_redraw()
+
+var _path: PackedVector2Array = PackedVector2Array()
+
+func _draw() -> void:
+	if _path.is_empty():
+		return
+	var last_point = _path[0]
+	for index in range(1, len(_path)):
+		var current_point = _path[index]
+		draw_line(last_point, current_point, Color.WHITE, 2.0, true)
+		draw_circle(current_point, 2.0 * 2.0, Color.WHITE)
+		last_point = current_point
+
+func _spawn_objects():
+	# +1/-1 so that we don't spawn objects on the edges
+	for x in range(mine_offset_cells.x + 1, grid_size_x + mine_offset_cells.x - 1):
+		for y in range(mine_offset_cells.y + 1, grid_size_y + mine_offset_cells.y - 1):
+			var cell_pos = Vector2i(x, y) + mine_offset_cells
 			var selected_scene = select_mining_object_scene(y)
 			if selected_scene != null:
-				var cell_pos = Vector2i(x, y) + offset
 				var instance = selected_scene.instantiate()
 				instance.position = cell_pos * Global.tile_size
 				instance.tree_exiting.connect(erase_cell.bind(cell_pos))
@@ -50,9 +87,12 @@ func erase_cell(cell_pos: Vector2i) -> void:
 	mine_tile_map_layer.set_cells_terrain_connect([cell_pos], 0, -1)
 	fog_tile_map_layer.erase_cell(cell_pos)
 	fog_tile_map_layer.set_cells_terrain_connect(fog_tile_map_layer.get_surrounding_cells(cell_pos), 0, -1)
+	_astar.set_point_solid(cell_pos, false)
 
-func _get_cells_at_position(pos: Vector2, radius: int = 0) -> Array: # Array[Vector2i]
-	var start_cell: Vector2i = mine_tile_map_layer.local_to_map(pos)
+	queue_redraw()
+
+func _get_cells_at_position(global_pos: Vector2, radius: int = 0) -> Array: # Array[Vector2i]
+	var start_cell: Vector2i = mine_tile_map_layer.local_to_map(to_local(global_pos))
 	var visited: Dictionary[Vector2i, bool] = {start_cell: true}
 	var frontier := [start_cell]
 	for i in range(radius):
@@ -69,8 +109,8 @@ func reveal_cell_at_position(pos: Vector2, radius: int = 0) -> void:
 	var cells = _get_cells_at_position(pos, radius)
 	fog_tile_map_layer.set_cells_terrain_connect(cells, 0, -1)
 
-func use_cell_at_position(pos: Vector2, radius: int = 0) -> void:
-	var cells = _get_cells_at_position(pos, radius)
+func use_cell_at_position(global_pos: Vector2, radius: int = 0) -> void:
+	var cells = _get_cells_at_position(global_pos, radius)
 	for cell in cells:
 		if cell in objects:
 			objects[cell].use_object()
@@ -90,7 +130,24 @@ func _emit_particle(pos: Vector2i) -> void:
 	particle.finished.connect(particle.queue_free)
 
 
-func get_distance_in_cells(position1, position2) -> float:
-	var grid_pos = mine_tile_map_layer.local_to_map(position1)
-	var player_cell = mine_tile_map_layer.local_to_map(position2)
+func get_distance_in_cells(position1: Vector2, position2: Vector2) -> float:
+	var grid_pos = mine_tile_map_layer.local_to_map(to_local(position1))
+	var player_cell = mine_tile_map_layer.local_to_map(to_local(position2))
 	return player_cell.distance_to(grid_pos)
+
+func draw_path_to_surface(from_position_global: Vector2) -> void:
+	_path = get_shortest_path_to_surface(from_position_global)
+	queue_redraw()
+
+func get_shortest_path_to_surface(from_position_global: Vector2) -> PackedVector2Array:
+	var cell_pos: Vector2i = mine_tile_map_layer.local_to_map(to_local(from_position_global))
+
+	var min_path = null
+	for point in _surface_points:
+		var path = _astar.get_point_path(point, cell_pos)
+		if path.is_empty():
+			continue
+		if not min_path or len(min_path) > len(path):
+			min_path = path
+			continue
+	return min_path

@@ -9,7 +9,7 @@ shader = ExtResource("2_aj24w")
 shader_parameter/flash = false
 shader_parameter/override_color = Vector4(0.315, 0.225, 1, 1)
 
-[node name="MoneyBlock" type="Node2D"]
+[node name="MoneyBlock2" type="Node2D"]
 script = ExtResource("1_tpvas")
 resource_value = 10
 block_density = 3

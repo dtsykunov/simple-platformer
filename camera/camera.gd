@@ -13,7 +13,7 @@ var _shake_strength: float = 0.0
 
 
 func _ready() -> void:
-	global_position = Vector2(get_viewport().get_visible_rect().size.x / 2, camera_offset_y)
+	position = Vector2(get_viewport().get_visible_rect().size.x / 2, camera_offset_y)
 
 func trigger_shake() -> void:
 	_shake_strength = max_shake
@@ -24,12 +24,11 @@ func _process(delta: float) -> void:
 
 
 func _process_move(_delta: float) -> void:
-	if player.global_position.y < camera_offset_y:
+	if player.position.y < camera_offset_y:
 		return
-	if player.global_position.y > (bottom_boundary.global_position.y - camera_offset_y):
+	if player.position.y > (bottom_boundary.position.y - camera_offset_y):
 		return
-	global_position.y = player.global_position.y # jerky camera
-	# global_position.y = lerp(round(global_position.y), round(player.global_position.y), follow_speed * delta) # smooth camera # extra smooth with rounding xD
+	position.y = player.position.y # jerky camera
 
 func _process_shake(delta: float) -> void:
 	if _shake_strength > 0:
