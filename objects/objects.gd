@@ -26,10 +26,10 @@ func _ready() -> void:
 
 func use_object():
 	block_density -= 1
+	if block_density <= 0:
+		ResourceManager.add_resource(selected_resource, resource_value)
+		queue_free()
 	if shader_mat:
 		shader_mat.set_shader_parameter("flash", true)
 		await get_tree().create_timer(0.1).timeout
 		shader_mat.set_shader_parameter("flash", false)
-	if block_density <= 0:
-		ResourceManager.add_resource(selected_resource, resource_value)
-		queue_free()
