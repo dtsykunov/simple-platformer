@@ -20,8 +20,8 @@ var objects: Dictionary[Vector2i, Node] = {}
 @onready var _astar: AStarGrid2D = AStarGrid2D.new()
 
 func _ready():
-	_setup_astar()
 	_spawn_objects()
+	_setup_astar()
 	Global.grid_spawner = self
 
 var _surface_points: Array[Vector2i] = []
@@ -42,16 +42,17 @@ func _setup_astar() -> void:
 	for x in range(mine_offset_cells.x, grid_size_x + mine_offset_cells.x):
 		_surface_points.append(Vector2i(x, mine_offset_cells.y - 1))
 
+
 	queue_redraw()
 
-var _path: PackedVector2Array = PackedVector2Array()
+var _shortest_path: PackedVector2Array = PackedVector2Array()
 
 func _draw() -> void:
-	if _path.is_empty():
+	if _shortest_path.is_empty():
 		return
-	var last_point = _path[0]
-	for index in range(1, len(_path)):
-		var current_point = _path[index]
+	var last_point = _shortest_path[0]
+	for index in range(1, len(_shortest_path)):
+		var current_point = _shortest_path[index]
 		draw_line(last_point, current_point, Color.WHITE, 2.0, true)
 		draw_circle(current_point, 2.0 * 2.0, Color.WHITE)
 		last_point = current_point
@@ -136,13 +137,13 @@ func get_distance_in_cells(position1: Vector2, position2: Vector2) -> float:
 	return player_cell.distance_to(grid_pos)
 
 func draw_path_to_surface(from_position_global: Vector2) -> void:
-	_path = get_shortest_path_to_surface(from_position_global)
+	_shortest_path = get_shortest_path_to_surface(from_position_global)
 	queue_redraw()
 
 func get_shortest_path_to_surface(from_position_global: Vector2) -> PackedVector2Array:
 	var cell_pos: Vector2i = mine_tile_map_layer.local_to_map(to_local(from_position_global))
 
-	var min_path = null
+	var min_path = PackedVector2Array()
 	for point in _surface_points:
 		var path = _astar.get_point_path(point, cell_pos)
 		if path.is_empty():
