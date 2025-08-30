@@ -1,8 +1,68 @@
-[gd_scene load_steps=2 format=3 uid="uid://bm6bswng777cr"]
+[gd_scene load_steps=15 format=3 uid="uid://bm6bswng777cr"]
 
 [ext_resource type="Script" uid="uid://dpbwn6le3omh6" path="res://gui/upgrade_screen/upgrade_screen.gd" id="1_s1jit"]
+[ext_resource type="Texture2D" uid="uid://cwk56jgqgo1qr" path="res://assets/images/SpaceMarket.9.png" id="2_bmhbh"]
 
-[node name="Upgrade Screen" type="Control" node_paths=PackedStringArray("oxygen_upgrade_button", "skip_button", "oxygen_upgrade_price_label")]
+[sub_resource type="Gradient" id="Gradient_bmhbh"]
+offsets = PackedFloat32Array(0, 0.740519)
+colors = PackedColorArray(0, 0, 1, 0.286275, 0, 0, 1, 0)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_qnkvi"]
+gradient = SubResource("Gradient_bmhbh")
+fill = 1
+fill_from = Vector2(0.538462, 0.487179)
+
+[sub_resource type="Gradient" id="Gradient_qnkvi"]
+offsets = PackedFloat32Array(0)
+colors = PackedColorArray(0, 0, 0, 0.52549)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_3vl3v"]
+gradient = SubResource("Gradient_qnkvi")
+width = 40
+height = 40
+fill = 1
+fill_from = Vector2(0.504274, 0.517094)
+
+[sub_resource type="Gradient" id="Gradient_3vl3v"]
+offsets = PackedFloat32Array(0)
+colors = PackedColorArray(1, 1, 1, 0.109804)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_ef32q"]
+gradient = SubResource("Gradient_3vl3v")
+width = 40
+height = 40
+
+[sub_resource type="Gradient" id="Gradient_cvh57"]
+offsets = PackedFloat32Array(0)
+colors = PackedColorArray(0, 0, 0, 0)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_7igqg"]
+gradient = SubResource("Gradient_cvh57")
+width = 40
+height = 40
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_bmhbh"]
+gradient = SubResource("Gradient_qnkvi")
+width = 36
+height = 36
+fill = 1
+fill_from = Vector2(0.504274, 0.517094)
+
+[sub_resource type="Gradient" id="Gradient_7igqg"]
+offsets = PackedFloat32Array(0)
+colors = PackedColorArray(1, 1, 1, 0.109804)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_ejlde"]
+gradient = SubResource("Gradient_7igqg")
+width = 36
+height = 36
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_cvh57"]
+gradient = SubResource("Gradient_cvh57")
+width = 36
+height = 36
+
+[node name="Upgrade Screen" type="Control" node_paths=PackedStringArray("oxygen_upgrade_button", "pickaxe_upgrade_button", "skip_button", "money_amount_label", "upgrade_container", "upgrade_description", "upgrade_price_label")]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -10,46 +70,135 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_s1jit")
-oxygen_upgrade_button = NodePath("HBoxContainer/VBoxContainer/OxygenUpgradeButton")
-skip_button = NodePath("HBoxContainer/SkipButton")
-oxygen_upgrade_price_label = NodePath("HBoxContainer/VBoxContainer/HBoxContainer/OxygenPriceLabel")
+oxygen_upgrade_button = NodePath("TextureRect2/OxygenTanksButton")
+pickaxe_upgrade_button = NodePath("TextureRect2/PicaxeUpgradeButton")
+skip_button = NodePath("SkipButton")
+money_amount_label = NodePath("TextureRect2/HBoxContainer/MoneyAmount")
+upgrade_container = NodePath("TextureRect2/UpgradeDescription")
+upgrade_description = NodePath("TextureRect2/UpgradeDescription/UpgradeDescription")
+upgrade_price_label = NodePath("TextureRect2/UpgradeDescription/HBoxContainer/UpgradePrice")
 
-[node name="HBoxContainer" type="HBoxContainer" parent="."]
+[node name="TextureRect2" type="TextureRect" parent="."]
+texture_filter = 1
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -20.0
-offset_top = -20.0
-offset_right = 20.0
-offset_bottom = 20.0
+offset_left = -128.0
+offset_top = -128.0
+offset_right = 128.0
+offset_bottom = 128.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = SubResource("GradientTexture2D_qnkvi")
+
+[node name="TextureRect" type="TextureRect" parent="TextureRect2"]
+texture_filter = 1
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -120.0
+offset_top = -159.0
+offset_right = 136.0
+offset_bottom = 97.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("2_bmhbh")
+
+[node name="OxygenTanksButton" type="TextureButton" parent="TextureRect2"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = 26.0
+offset_top = -51.0
+offset_right = 66.0
+offset_bottom = -11.0
+grow_horizontal = 2
+grow_vertical = 2
+texture_normal = SubResource("GradientTexture2D_3vl3v")
+texture_pressed = SubResource("GradientTexture2D_ef32q")
+texture_hover = SubResource("GradientTexture2D_7igqg")
+
+[node name="PicaxeUpgradeButton" type="TextureButton" parent="TextureRect2"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -102.0
+offset_top = -57.0
+offset_right = -66.0
+offset_bottom = -21.0
+grow_horizontal = 2
+grow_vertical = 2
+disabled = true
+texture_normal = SubResource("GradientTexture2D_bmhbh")
+texture_pressed = SubResource("GradientTexture2D_ejlde")
+texture_hover = SubResource("GradientTexture2D_cvh57")
+
+[node name="UpgradeDescription" type="VBoxContainer" parent="TextureRect2"]
+visible = false
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = 100.0
+offset_top = -57.0
+offset_right = 216.0
+offset_bottom = -17.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="VBoxContainer" type="VBoxContainer" parent="HBoxContainer"]
+[node name="UpgradeDescription" type="Label" parent="TextureRect2/UpgradeDescription"]
+layout_mode = 2
+text = "Max Oxygen +5"
+
+[node name="HBoxContainer" type="HBoxContainer" parent="TextureRect2/UpgradeDescription"]
 layout_mode = 2
 
-[node name="OxygenUpgradeButton" type="Button" parent="HBoxContainer/VBoxContainer"]
+[node name="PriceDesc" type="Label" parent="TextureRect2/UpgradeDescription/HBoxContainer"]
 layout_mode = 2
-text = "+ max oxygen"
+text = "Price:"
 
-[node name="HBoxContainer" type="HBoxContainer" parent="HBoxContainer/VBoxContainer"]
+[node name="UpgradePrice" type="Label" parent="TextureRect2/UpgradeDescription/HBoxContainer"]
 layout_mode = 2
+text = "0"
 
-[node name="Label2" type="Label" parent="HBoxContainer/VBoxContainer/HBoxContainer"]
-layout_mode = 2
-size_flags_horizontal = 3
-text = "price"
-horizontal_alignment = 1
+[node name="HBoxContainer" type="HBoxContainer" parent="TextureRect2"]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
 
-[node name="OxygenPriceLabel" type="Label" parent="HBoxContainer/VBoxContainer/HBoxContainer"]
+[node name="Label" type="Label" parent="TextureRect2/HBoxContainer"]
 layout_mode = 2
-size_flags_horizontal = 3
-text = "10"
-horizontal_alignment = 1
+text = "Money: "
 
-[node name="SkipButton" type="Button" parent="HBoxContainer"]
+[node name="MoneyAmount" type="Label" parent="TextureRect2/HBoxContainer"]
 layout_mode = 2
+text = "100500"
+
+[node name="SkipButton" type="Button" parent="."]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = 138.0
+offset_top = 26.0
+offset_right = 178.0
+offset_bottom = 66.0
+grow_horizontal = 2
+grow_vertical = 2
 text = "skip"
