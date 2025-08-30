@@ -4,9 +4,12 @@ extends Control
 @export var video: VideoStreamPlayer
 @export var layer: CanvasLayer
 
+@export var particle_scene : PackedScene
+
 var allow = false
 
 func _ready() -> void:
+	_emit_particle()
 	video.finished.connect(_on_video_finished)
 
 func _unhandled_input(event: InputEvent) -> void:
@@ -29,3 +32,10 @@ func _start_main() -> void:
 	animation.play("zoom")
 	await animation.animation_finished
 	get_tree().change_scene_to_file("res://main/main.tscn")
+
+func _emit_particle() -> void:
+	var particle = particle_scene.instantiate()
+	particle.emitting = true
+	add_child(particle)
+	particle.finished.connect(particle.queue_free)
+	
