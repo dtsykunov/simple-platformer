@@ -139,4 +139,3 @@ offset_right = 1920.0
 offset_bottom = 1080.0
 scale = Vector2(0.25, 0.25)
 stream = ExtResource("3_ig5kc")
-autoplay = true
