@@ -63,7 +63,7 @@ func _process_shake(delta: float) -> void:
 func move(dir):
 	if state != State.IDLE:
 		return
-	anim.rotation = inputs[dir].angle()
+	_rotate_player(dir)
 
 	ray.target_position = inputs[dir] * Global.tile_size
 	ray.force_raycast_update()
@@ -78,6 +78,7 @@ func move(dir):
 		)
 		anim.play("walk")
 		if last_player_pos.y != new_position.y and new_position.y < 3 * Global.tile_size: # 3 for space tiles maybe add a check var
+			_restore_rotation()
 			Global.player_reached_surface.emit()
 		ResourceManager.add_resource(ResourceManager.ResourceType.OXYGEN, -1)
 
@@ -87,3 +88,22 @@ func move(dir):
 	Global.grid_spawner.use_cell_at_position(ray.target_position + global_position)
 	anim.play("mine")
 	ResourceManager.add_resource(ResourceManager.ResourceType.OXYGEN, -1)
+
+func _rotate_player(dir):
+	if inputs[dir].x > 0:
+		anim.flip_h = false
+	elif inputs[dir].x < 0:
+		anim.flip_h = true
+	else:
+		anim.flip_h = false
+
+	if inputs[dir].y > 0.0:
+		anim.rotation_degrees = 90
+	elif inputs[dir].y < 0.0:
+		anim.rotation_degrees = -90
+	else:
+		anim.rotation_degrees = 0
+
+func _restore_rotation() -> void:
+	anim.flip_h = 0
+	anim.rotation_degrees = 0
