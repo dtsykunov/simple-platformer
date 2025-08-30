@@ -61,6 +61,7 @@ gradient = SubResource("Gradient_ko4fd")
 width = 8
 
 [node name="RadarBlock" type="Node2D"]
+texture_filter = 1
 script = ExtResource("1_7uf1t")
 reveal_radius = 4
 

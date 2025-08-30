@@ -18,6 +18,12 @@ var inputs = {
 	"down": Vector2.DOWN,
 }
 
+# current oxygen / length of the shortest path to the sufrace
+# ratio when to start shaking
+var shake_ratio: float = 1.3
+var shake_time: float = 0.0
+var max_shake_strength: float = 1.0
+
 func _ready() -> void:
 	anim.play("idle")
 
@@ -27,6 +33,32 @@ func _physics_process(_delta: float) -> void:
 	for dir in inputs.keys():
 		if Input.is_action_just_pressed(dir):
 			move(dir)
+
+func _process(delta: float) -> void:
+	_process_shake(delta)
+
+func _process_shake(delta: float) -> void:
+	# shake character when he's low on oxygen
+	var path: Array = Global.grid_spawner.get_shortest_path_to_surface(global_position)
+
+	if path.is_empty():
+		return
+
+	var ratio: float = float(ResourceManager.get_resource(ResourceManager.ResourceType.OXYGEN)) / len(path)
+
+	# decide shake strength
+	var strength: float = 0.0
+	if ratio <= shake_ratio:
+		strength = lerp(max_shake_strength, 0.0, clamp(ratio / shake_ratio, 0.0, 1.0))
+
+	# apply shake
+	if strength > 0.0:
+		shake_time += delta * 30.0
+		var offset_x = sin(shake_time) * strength
+		var offset_y = cos(shake_time * 1.2) * strength
+		anim.position = Vector2(offset_x, offset_y)
+	else:
+		anim.position = Vector2.ZERO
 
 func move(dir):
 	if state != State.IDLE:
@@ -43,7 +75,6 @@ func move(dir):
 		tween.finished.connect(func():
 			state = State.IDLE
 			anim.play("idle")
-			Global.grid_spawner.draw_path_to_surface(global_position)
 		)
 		anim.play("walk")
 		if last_player_pos.y != new_position.y and new_position.y < 3 * Global.tile_size: # 3 for space tiles maybe add a check var

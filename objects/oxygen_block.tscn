@@ -11,6 +11,7 @@ shader_parameter/flash = false
 shader_parameter/override_color = Vector4(1, 1, 1, 1)
 
 [node name="OxygenBlock" instance=ExtResource("1_tam42")]
+texture_filter = 1
 selected_resource = 1
 resource_value = 5
 random_images = Array[Texture2D]([ExtResource("2_hdm47"), ExtResource("2_1tsyr")])

@@ -56,6 +56,8 @@ func add_resource(resource_type: ResourceType, value: int) -> void:
 
 	set_resource_value(resource_type, new_value)
 
+func get_resource(resource_type: ResourceType) -> int:
+	return resources.get(resource_type, 0)
 
 func set_resource_value(resource_type: ResourceType, value: int):
 	resources[resource_type] = value

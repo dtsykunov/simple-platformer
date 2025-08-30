@@ -42,9 +42,6 @@ func _setup_astar() -> void:
 	for x in range(mine_offset_cells.x, grid_size_x + mine_offset_cells.x):
 		_surface_points.append(Vector2i(x, mine_offset_cells.y - 1))
 
-
-	queue_redraw()
-
 var _shortest_path: PackedVector2Array = PackedVector2Array()
 
 func _draw() -> void:
