@@ -35,13 +35,15 @@ func _physics_process(_delta: float) -> void:
 			move(dir)
 
 func _process(delta: float) -> void:
-	_process_shake(delta)
+	_process_low_oxygen(delta)
 
-func _process_shake(delta: float) -> void:
+func _process_low_oxygen(delta: float) -> void:
 	# shake character when he's low on oxygen
 	var path: Array = Global.grid_spawner.get_shortest_path_to_surface(global_position)
 
-	if path.is_empty():
+	if path.is_empty() or is_on_surface():
+		anim.position = Vector2.ZERO
+		anim.modulate = Color.WHITE
 		return
 
 	var ratio: float = float(ResourceManager.get_resource(ResourceManager.ResourceType.OXYGEN)) / len(path)
@@ -59,6 +61,9 @@ func _process_shake(delta: float) -> void:
 		anim.position = Vector2(offset_x, offset_y)
 	else:
 		anim.position = Vector2.ZERO
+
+	var red_intensity: float = clamp((shake_ratio - ratio) / shake_ratio, 0.0, 1.0)
+	anim.modulate = Color(1.0, 1.0 - red_intensity, 1.0 - red_intensity)
 
 func move(dir):
 	if state != State.IDLE:
@@ -80,6 +85,7 @@ func move(dir):
 		if last_player_pos.y != new_position.y and new_position.y < 3 * Global.tile_size: # 3 for space tiles maybe add a check var
 			_restore_rotation()
 			Global.player_reached_surface.emit()
+			_restore_rotation()
 		ResourceManager.add_resource(ResourceManager.ResourceType.OXYGEN, -1)
 
 		last_player_pos = new_position
@@ -88,6 +94,9 @@ func move(dir):
 	Global.grid_spawner.use_cell_at_position(ray.target_position + global_position)
 	anim.play("mine")
 	ResourceManager.add_resource(ResourceManager.ResourceType.OXYGEN, -1)
+
+func is_on_surface() -> bool:
+	return position.y < 3 * Global.tile_size
 
 func _rotate_player(dir):
 	if inputs[dir].x > 0:
