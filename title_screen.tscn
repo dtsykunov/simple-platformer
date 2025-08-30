@@ -1,7 +1,8 @@
-[gd_scene load_steps=6 format=3 uid="uid://dgekpvkf6j15a"]
+[gd_scene load_steps=7 format=3 uid="uid://dgekpvkf6j15a"]
 
 [ext_resource type="Script" uid="uid://dw8mrmw2oipj6" path="res://title_screen.gd" id="1_ak2if"]
-[ext_resource type="Texture2D" uid="uid://blfpda0kl0qhj" path="res://assets/images/Title_Screen_.png" id="1_v6p8y"]
+[ext_resource type="Texture2D" uid="uid://gqm5v16gwwkw" path="res://assets/images/Title_Screen_.png" id="1_v6p8y"]
+[ext_resource type="VideoStream" uid="uid://bslel2jh4ke2o" path="res://assets/videos/333.ogv" id="3_ig5kc"]
 
 [sub_resource type="Animation" id="Animation_ig5kc"]
 length = 0.001
@@ -87,7 +88,7 @@ _data = {
 &"zoom": SubResource("Animation_ak2if")
 }
 
-[node name="Control" type="Control" node_paths=PackedStringArray("animation")]
+[node name="Control" type="Control" node_paths=PackedStringArray("animation", "video", "layer")]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -96,6 +97,8 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_ak2if")
 animation = NodePath("AnimationPlayer")
+video = NodePath("CanvasLayer/SubViewportContainer/SubViewport/VideoStreamPlayer")
+layer = NodePath("CanvasLayer")
 
 [node name="TextureRect" type="TextureRect" parent="."]
 texture_filter = 1
@@ -117,3 +120,19 @@ reset_on_save = false
 libraries = {
 &"": SubResource("AnimationLibrary_05l2w")
 }
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="SubViewportContainer" type="SubViewportContainer" parent="CanvasLayer"]
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="SubViewport" type="SubViewport" parent="CanvasLayer/SubViewportContainer"]
+size = Vector2i(1920, 1080)
+
+[node name="VideoStreamPlayer" type="VideoStreamPlayer" parent="CanvasLayer/SubViewportContainer/SubViewport"]
+offset_right = 1920.0
+offset_bottom = 1080.0
+scale = Vector2(0.25, 0.25)
+stream = ExtResource("3_ig5kc")
+autoplay = true
