@@ -1,21 +1,36 @@
-[gd_scene load_steps=6 format=3 uid="uid://dkg7fa2iy1m7c"]
+[gd_scene load_steps=8 format=3 uid="uid://dkg7fa2iy1m7c"]
 
-[ext_resource type="PackedScene" uid="uid://bopwgln8jb6bd" path="res://objects/money_block.tscn" id="1_tam42"]
+[ext_resource type="Script" uid="uid://fat35jgt7e35" path="res://objects/objects.gd" id="1_0gk41"]
 [ext_resource type="Texture2D" uid="uid://bsuwlavhx32st" path="res://assets/images/OxygenTileAssets.png" id="2_1tsyr"]
 [ext_resource type="Texture2D" uid="uid://bcqd3fdq8wf4s" path="res://assets/images/OxygenTile2.png" id="2_hdm47"]
 [ext_resource type="Shader" uid="uid://c6j5f5ukxrrdo" path="res://objects/object_shader.gdshader" id="4_flitr"]
+[ext_resource type="AudioStream" uid="uid://cwkksi1r0hcfm" path="res://assets/sfx/impactSoft_heavy_001.ogg" id="5_0gk41"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_0gk41"]
 shader = ExtResource("4_flitr")
 shader_parameter/flash = false
 shader_parameter/override_color = Vector4(1, 1, 1, 1)
 
-[node name="OxygenBlock" instance=ExtResource("1_tam42")]
+[sub_resource type="AudioStreamRandomizer" id="AudioStreamRandomizer_0gk41"]
+random_pitch = 1.5
+streams_count = 1
+stream_0/stream = ExtResource("5_0gk41")
+
+[node name="OxygenBlock" type="Node2D"]
 texture_filter = 1
+script = ExtResource("1_0gk41")
 selected_resource = 1
 resource_value = 5
 random_images = Array[Texture2D]([ExtResource("2_hdm47"), ExtResource("2_1tsyr")])
 
-[node name="TextureRect" parent="." index="0"]
+[node name="TextureRect" type="TextureRect" parent="."]
+texture_filter = 1
 material = SubResource("ShaderMaterial_0gk41")
+offset_right = 16.0
+offset_bottom = 16.0
 texture = ExtResource("2_1tsyr")
+expand_mode = 1
+
+[node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="."]
+stream = SubResource("AudioStreamRandomizer_0gk41")
+volume_db = 2.0

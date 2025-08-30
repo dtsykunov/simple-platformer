@@ -1,7 +1,8 @@
-[gd_scene load_steps=10 format=3 uid="uid://wwlmg84m0cxp"]
+[gd_scene load_steps=12 format=3 uid="uid://wwlmg84m0cxp"]
 
 [ext_resource type="Script" uid="uid://mnu2cb3rc780" path="res://objects/radar_block.gd" id="1_7uf1t"]
 [ext_resource type="Script" uid="uid://c1xwspajjyl0k" path="res://objects/animation_loop.gd" id="2_2efth"]
+[ext_resource type="AudioStream" uid="uid://bovx51ppyfoyo" path="res://assets/sfx/445723__lilmati__radar-something-detected-01-sec.wav" id="3_2efth"]
 
 [sub_resource type="Gradient" id="Gradient_lrhnw"]
 interpolation_mode = 1
@@ -60,6 +61,11 @@ colors = PackedColorArray(0, 0, 0, 1, 0, 0, 0, 1)
 gradient = SubResource("Gradient_ko4fd")
 width = 8
 
+[sub_resource type="AudioStreamRandomizer" id="AudioStreamRandomizer_eppjd"]
+random_pitch = 1.5
+streams_count = 1
+stream_0/stream = ExtResource("3_2efth")
+
 [node name="RadarBlock" type="Node2D"]
 texture_filter = 1
 script = ExtResource("1_7uf1t")
@@ -87,3 +93,6 @@ offset_top = 8.0
 offset_right = 16.0
 offset_bottom = 9.0
 texture = SubResource("GradientTexture1D_e5bou")
+
+[node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="."]
+stream = SubResource("AudioStreamRandomizer_eppjd")

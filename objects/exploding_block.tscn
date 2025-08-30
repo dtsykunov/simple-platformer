@@ -1,6 +1,7 @@
-[gd_scene load_steps=5 format=3 uid="uid://cxew0gsdvsuqy"]
+[gd_scene load_steps=7 format=3 uid="uid://cxew0gsdvsuqy"]
 
 [ext_resource type="Script" uid="uid://dbbcqel5otauh" path="res://objects/exploding_block.gd" id="1_a4dpp"]
+[ext_resource type="AudioStream" uid="uid://d0kph4iqte0bs" path="res://assets/sfx/404742__owlstorm__retro-video-game-sfx-explode-5.wav" id="2_440mi"]
 
 [sub_resource type="Gradient" id="Gradient_a4dpp"]
 colors = PackedColorArray(1, 0, 0, 1, 1, 0, 0, 1)
@@ -11,6 +12,11 @@ gradient = SubResource("Gradient_a4dpp")
 [sub_resource type="LabelSettings" id="LabelSettings_a4dpp"]
 line_spacing = 0.0
 font_size = 8
+
+[sub_resource type="AudioStreamRandomizer" id="AudioStreamRandomizer_a4dpp"]
+random_pitch = 1.5
+streams_count = 1
+stream_0/stream = ExtResource("2_440mi")
 
 [node name="ExplodingBlock" type="Node2D"]
 script = ExtResource("1_a4dpp")
@@ -32,3 +38,6 @@ text = "TNT"
 label_settings = SubResource("LabelSettings_a4dpp")
 horizontal_alignment = 1
 vertical_alignment = 1
+
+[node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="."]
+stream = SubResource("AudioStreamRandomizer_a4dpp")

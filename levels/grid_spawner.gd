@@ -14,7 +14,6 @@ var objects: Dictionary[Vector2i, Node] = {}
 @onready var mine_tile_map_layer: TileMapLayer = %MineTileMapLayer
 @onready var fog_tile_map_layer: TileMapLayer = %FogTileMapLayer
 @onready var sound_player: AudioStreamPlayer2D = $AudioStreamPlayer2DMining
-@onready var sound_player_gold: AudioStreamPlayer2D = $AudioStreamPlayer2DGold
 @onready var player: CharacterBody2D = $Player
 
 @onready var _astar: AStarGrid2D = AStarGrid2D.new()
@@ -63,7 +62,7 @@ func _spawn_objects():
 			if selected_scene != null:
 				var instance = selected_scene.instantiate()
 				instance.position = cell_pos * Global.tile_size
-				instance.tree_exiting.connect(erase_cell.bind(cell_pos))
+				instance.fully_used.connect(erase_cell.bind(cell_pos))
 				mine_tile_map_layer.add_child(instance)
 				objects[cell_pos] = instance
 
@@ -112,11 +111,9 @@ func use_cell_at_position(global_pos: Vector2, radius: int = 0) -> void:
 	for cell in cells:
 		if cell in objects:
 			objects[cell].use_object()
-			sound_player.play()
-			sound_player_gold.play()
 		else:
 			erase_cell(cell)
-			sound_player.play()
+		sound_player.play()
 		_emit_particle(cell)
 
 

@@ -1,5 +1,7 @@
 extends Node2D
 
+signal fully_used
+
 @export var turns_to_explode: int = 3
 @export var damage_radius: int = 2
 @export var start_count: bool = false
@@ -9,6 +11,7 @@ extends Node2D
 @onready var tile_map_layer2: TileMapLayer = $"../../FogTileMapLayer"
 
 @onready var label: Label = $"Label"
+@onready var sound: AudioStreamPlayer2D = $AudioStreamPlayer2D
 
 var grid_pos: Vector2i
 
@@ -20,6 +23,12 @@ var inputs = {
 	"down": Vector2.DOWN,
 }
 
+enum State {
+	IDLE,
+	EXPLODING,
+}
+var state: State = State.IDLE
+
 
 func use_object() -> void:
 	start_count = true
@@ -30,6 +39,8 @@ func _physics_process(_delta: float) -> void:
 	if Global.game_controller.game_state != Main.GameState.PLAYING:
 		return
 	if !start_count:
+		return
+	if state != State.IDLE:
 		return
 	for dir in inputs.keys():
 		if Input.is_action_just_pressed(dir):
@@ -44,13 +55,17 @@ func process_turn() -> void:
 
 
 func _trigger_explosion() -> void:
+	state = State.EXPLODING
+	fully_used.emit()
+	hide()
 	get_viewport().get_camera_2d().trigger_shake()
 	Global.grid_spawner.use_cell_at_position(global_position, damage_radius)
 
 	if deal_damage:
 		_damage_player_if_near()
 
-	queue_free()
+	sound.play()
+	sound.finished.connect(queue_free)
 
 
 func _damage_player_if_near() -> void:
