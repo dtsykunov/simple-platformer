@@ -14,7 +14,7 @@ enum UpgradeTypes {
 	ADD_MAX_OXYGEN,
 }
 
-const UPGRADE_PRICE_MULTIPLIER: int = 2
+const UPGRADE_PRICE_MULTIPLIER: int = 3
 const DEFAULT_MAX_OXYGEN: int = 20
 
 @export var default_resources: Dictionary[ResourceType, int] = {
@@ -83,8 +83,9 @@ func buy_upgrade(upgrade_type: UpgradeTypes) -> void:
 		return
 	var price = upgrades_prices[upgrade_type]
 	add_resource(ResourceType.MONEY, -price)
-	upgrades_levels[upgrade_type] += 1
-	upgrades_prices[upgrade_type] *= UPGRADE_PRICE_MULTIPLIER
+	var new_level = upgrades_levels[upgrade_type] + 1
+	upgrades_levels[upgrade_type] = new_level
+	upgrades_prices[upgrade_type] += new_level * UPGRADE_PRICE_MULTIPLIER
 	_apply_upgrades(upgrade_type)
 
 

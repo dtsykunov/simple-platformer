@@ -54,7 +54,7 @@ metadata/_custom_type_script = "uid://bi8fethk08cn5"
 [sub_resource type="Resource" id="Resource_c84p0"]
 script = ExtResource("4_1ij17")
 scene = ExtResource("7_iog2i")
-probability = 0.01
+probability = 0.05
 gen_height_min = 0
 gen_height_max = -1
 metadata/_custom_type_script = "uid://bi8fethk08cn5"
